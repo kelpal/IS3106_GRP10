@@ -20,6 +20,8 @@
 *.rar
 
 /SKATEasyV10/build/
+/SKATEasyV10/dist/
+/SKATEasyV10/nbproject/private/
 
 /SKATEasyV10/SKATEasyV10-ejb/build/
 /SKATEasyV10/SKATEasyV10-ejb/dist/
