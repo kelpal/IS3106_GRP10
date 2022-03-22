@@ -6,10 +6,23 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -22,7 +35,39 @@ public class ProductEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+    @Column(nullable = false, length = 64)
+    @NotNull
+    @Size(max = 64)
     private String productName;
+    @Column(length = 128)
+    @Size(max = 128)
+    private String description;
+    @Column(nullable = false)
+    @NotNull
+    @Min(0)
+    private Integer quantityOnHand;
+    @Column(nullable = false)
+    @NotNull
+    @Min(0)
+    private Integer reorderQuantity;
+    @Column(nullable = false, precision = 11, scale = 2)
+    @NotNull
+    @DecimalMin("0.00")
+    @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
+    private BigDecimal unitPrice;    
+    @Column(nullable = false)
+    @NotNull
+    @Positive
+    @Min(1)
+    @Max(5)
+    private Integer productRating;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private CategoryEntity categoryEntity;
+    
+    @ManyToMany(mappedBy = "productEntities")
+    private List<TagEntity> tagEntities;
 
     
     public ProductEntity() {
@@ -32,6 +77,18 @@ public class ProductEntity implements Serializable {
         this(); //good practice to retain convention even if default constructor is empty
         this.productName = productName;
     }
+
+    public ProductEntity(String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Integer productRating, CategoryEntity categoryEntity) {
+        this.productName = productName;
+        this.description = description;
+        this.quantityOnHand = quantityOnHand;
+        this.reorderQuantity = reorderQuantity;
+        this.unitPrice = unitPrice;
+        this.productRating = productRating;
+        this.categoryEntity = categoryEntity;
+    }
+    
+    
 
     
     
@@ -79,7 +136,105 @@ public class ProductEntity implements Serializable {
      * @param productName the productName to set
      */
     public void setProductName(String productName) {
-        this.productName = productName;
+        this.setProductName(productName);
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the quantityOnHand
+     */
+    public Integer getQuantityOnHand() {
+        return quantityOnHand;
+    }
+
+    /**
+     * @param quantityOnHand the quantityOnHand to set
+     */
+    public void setQuantityOnHand(Integer quantityOnHand) {
+        this.quantityOnHand = quantityOnHand;
+    }
+
+    /**
+     * @return the reorderQuantity
+     */
+    public Integer getReorderQuantity() {
+        return reorderQuantity;
+    }
+
+    /**
+     * @param reorderQuantity the reorderQuantity to set
+     */
+    public void setReorderQuantity(Integer reorderQuantity) {
+        this.reorderQuantity = reorderQuantity;
+    }
+
+    /**
+     * @return the unitPrice
+     */
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    /**
+     * @param unitPrice the unitPrice to set
+     */
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    /**
+     * @return the productRating
+     */
+    public Integer getProductRating() {
+        return productRating;
+    }
+
+    /**
+     * @param productRating the productRating to set
+     */
+    public void setProductRating(Integer productRating) {
+        this.productRating = productRating;
+    }
+
+    /**
+     * @return the categoryEntity
+     */
+    public CategoryEntity getCategoryEntity() {
+        return categoryEntity;
+    }
+
+    /**
+     * @param categoryEntity the categoryEntity to set
+     */
+    public void setCategoryEntity(CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
+    }
+
+    /**
+     * @return the tagEntities
+     */
+    public List<TagEntity> getTagEntities() {
+        return tagEntities;
+    }
+
+    /**
+     * @param tagEntities the tagEntities to set
+     */
+    public void setTagEntities(List<TagEntity> tagEntities) {
+        this.tagEntities = tagEntities;
     }
     
 }
