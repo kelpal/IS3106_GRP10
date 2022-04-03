@@ -54,7 +54,12 @@ public class ProductEntity implements Serializable {
     @NotNull
     @DecimalMin("0.00")
     @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
-    private BigDecimal unitPrice;    
+    private BigDecimal unitPrice;
+    @Column(nullable = false, precision = 11, scale = 2)
+    @NotNull
+    @DecimalMin("0.00")
+    @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
+    private BigDecimal originalPrice;
     @Column(nullable = false)
     @NotNull
     @Positive
@@ -78,12 +83,13 @@ public class ProductEntity implements Serializable {
         this.productName = productName;
     }
 
-    public ProductEntity(String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, Integer productRating, CategoryEntity categoryEntity) {
+    public ProductEntity(String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating, CategoryEntity categoryEntity) {
         this.productName = productName;
         this.description = description;
         this.quantityOnHand = quantityOnHand;
         this.reorderQuantity = reorderQuantity;
         this.unitPrice = unitPrice;
+        this.originalPrice = originalPrice;
         this.productRating = productRating;
         this.categoryEntity = categoryEntity;
     }
@@ -235,6 +241,20 @@ public class ProductEntity implements Serializable {
      */
     public void setTagEntities(List<TagEntity> tagEntities) {
         this.tagEntities = tagEntities;
+    }
+
+    /**
+     * @return the originalPrice
+     */
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
+    }
+
+    /**
+     * @param originalPrice the originalPrice to set
+     */
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
     }
     
 }

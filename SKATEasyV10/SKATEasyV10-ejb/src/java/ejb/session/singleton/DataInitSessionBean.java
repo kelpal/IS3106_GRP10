@@ -72,16 +72,16 @@ public class DataInitSessionBean {
                 Long catAId = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Category A", "Category A"), null);
             
             
-                productEntitySessionBeanLocal.createNewProduct(new ProductEntity("Product A", "Product A", 10, 10, new BigDecimal(10), 5, categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(catAId)));
-                productEntitySessionBeanLocal.createNewProduct(new ProductEntity("Product B", "Product B", 10, 10, new BigDecimal(10), 5, categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(catAId)));
-                productEntitySessionBeanLocal.createNewProduct(new ProductEntity("Product C", "Product C", 10, 10, new BigDecimal(10), 5, categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(catAId)));
-                productEntitySessionBeanLocal.createNewProduct(new ProductEntity("Product D", "Product D", 10, 10, new BigDecimal(10), 5, categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(catAId)));
-                productEntitySessionBeanLocal.createNewProduct(new ProductEntity("Product E", "Product E", 10, 10, new BigDecimal(10), 5, categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(catAId)));
+                //productEntitySessionBeanLocal.createNewProduct(new ProductEntity("Product A", "Product A", 10, 10, new BigDecimal(10),new BigDecimal(10), 5, categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(catAId)));
+                //productEntitySessionBeanLocal.createNewProduct(new ProductEntity("Product B", "Product B", 10, 10, new BigDecimal(10),new BigDecimal(10), 5, categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(catAId)));
+                //productEntitySessionBeanLocal.createNewProduct(new ProductEntity("Product C", "Product C", 10, 10, new BigDecimal(10),new BigDecimal(10), 5, categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(catAId)));
+                //productEntitySessionBeanLocal.createNewProduct(new ProductEntity("Product D", "Product D", 10, 10, new BigDecimal(10),new BigDecimal(10), 5, categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(catAId)));
+                //productEntitySessionBeanLocal.createNewProduct(new ProductEntity("Product E", "Product E", 10, 10, new BigDecimal(10),new BigDecimal(10), 5, categoryEntitySessionBeanLocal.retrieveCategoryByCategoryId(catAId)));
                 
                 artistEntitySessionBeanLocal.createNewArtist(new ArtistEntity("Artist 1", "artist1@email.com", "artist1", "password"));
                 //customerEntitySessionBeanLocal.createNewCustomer(new CustomerEntity("Customer 1", "customer1@email.com", "customer1", "password"));
                 
-                } catch (CreateNewCategoryException | InputDataValidationException | CategoryNotFoundException | ArtistUsernameExistException
+                } catch (CreateNewCategoryException | InputDataValidationException | ArtistUsernameExistException
                         | UnknownPersistenceException  ex) {
                     ex.printStackTrace();
                 }

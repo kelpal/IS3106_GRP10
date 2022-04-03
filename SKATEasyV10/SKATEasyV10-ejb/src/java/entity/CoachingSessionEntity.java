@@ -1,0 +1,83 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package entity;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import util.enumeration.DayOfWeekEnum;
+import util.enumeration.SessionNumberEnum;
+
+/**
+ *
+ * @author harmo
+ */
+@Entity
+public class CoachingSessionEntity extends ProductEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Column(nullable = false)
+    @NotNull
+    private DayOfWeekEnum dayOfWeek;
+    @Column(nullable = false)
+    @NotNull
+    private SessionNumberEnum session;
+    
+    
+    public CoachingSessionEntity() {
+        super();
+    }
+
+    public CoachingSessionEntity(DayOfWeekEnum dayOfWeek, SessionNumberEnum session) {
+        this.dayOfWeek = dayOfWeek;
+        this.session = session;
+    }
+
+    public CoachingSessionEntity(DayOfWeekEnum dayOfWeek, SessionNumberEnum session, String productName) {
+        super(productName);
+        this.dayOfWeek = dayOfWeek;
+        this.session = session;
+    }
+
+    public CoachingSessionEntity(DayOfWeekEnum dayOfWeek, SessionNumberEnum session, String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating, CategoryEntity categoryEntity) {
+        super(productName, description, quantityOnHand, reorderQuantity, unitPrice, originalPrice, productRating, categoryEntity);
+        this.dayOfWeek = dayOfWeek;
+        this.session = session;
+    }
+    /**
+     * @return the dayOfWeek
+     */
+    public DayOfWeekEnum getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    /**
+     * @param dayOfWeek the dayOfWeek to set
+     */
+    public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    /**
+     * @return the session
+     */
+    public SessionNumberEnum getSession() {
+        return session;
+    }
+
+    /**
+     * @param session the session to set
+     */
+    public void setSession(SessionNumberEnum session) {
+        this.session = session;
+    }
+    
+}
