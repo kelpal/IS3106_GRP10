@@ -6,6 +6,8 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +15,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import util.enumeration.AccessRightEnum;
@@ -48,12 +51,16 @@ public class StaffEntity implements Serializable {
     @Size(min = 8, max = 32)
     @NotNull
     private String password;
+    
+    @OneToMany(mappedBy = "staffEntity")
+    private List<SaleTransactionEntity> saleTransactionEntities;
 
     public StaffEntity() {
+        this.saleTransactionEntities = new ArrayList<>();
     }
 
-    public StaffEntity(Long staffId, String firstName, String lastName, AccessRightEnum accessRightEnum, String username, String password) {
-        this.staffId = staffId;
+    public StaffEntity(String firstName, String lastName, AccessRightEnum accessRightEnum, String username, String password) {
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.accessRightEnum = accessRightEnum;
@@ -164,6 +171,20 @@ public class StaffEntity implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the saleTransactionEntities
+     */
+    public List<SaleTransactionEntity> getSaleTransactionEntities() {
+        return saleTransactionEntities;
+    }
+
+    /**
+     * @param saleTransactionEntities the saleTransactionEntities to set
+     */
+    public void setSaleTransactionEntities(List<SaleTransactionEntity> saleTransactionEntities) {
+        this.saleTransactionEntities = saleTransactionEntities;
     }
     
 }

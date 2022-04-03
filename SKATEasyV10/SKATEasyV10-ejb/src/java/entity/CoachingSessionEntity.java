@@ -37,6 +37,7 @@ public class CoachingSessionEntity extends ProductEntity implements Serializable
     }
 
     public CoachingSessionEntity(DayOfWeekEnum dayOfWeek, SessionNumberEnum session) {
+        super();
         this.dayOfWeek = dayOfWeek;
         this.session = session;
     }
