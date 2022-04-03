@@ -10,18 +10,18 @@
         <h:panelGroup rendered="#{sessionScope.isLogin == false}">
             <h:form id="customerloginForm">
 
-                <p:outputLabel for="email" value="Email: "/>&nbsp;
-                <p:inputText id="email" required="true" requiredMessage="Please key in your email" value="#{customerLoginManagedBean.email}" >
+                <p:outputLabel for="username" value="Username: "/>&nbsp;
+                <p:inputText id="username" required="true" requiredMessage="Please key in your username" value="#{staffLoginManagedBean.username}" >
                     <f:validateLength minimum="4" />
                 </p:inputText>&nbsp;
 
                 <p:outputLabel for="password" value="Password: " />&nbsp;
-                <p:password id="password" required="true" requiredMessage="Please key in your password" value="#{customerLoginManagedBean.password}" >
+                <p:password id="password" required="true" requiredMessage="Please key in your password" value="#{staffLoginManagedBean.password}" >
                     <f:validateLength minimum="4" />
                 </p:password>
                 &nbsp;
 
-                <p:commandButton value="Login" type="submit" actionListener="#{customerLoginManagedBean.login}"/>&nbsp;
+                <p:commandButton value="Login" type="submit" actionListener="#{staffLoginManagedBean.login}"/>&nbsp;
                 <p:commandButton value="Clear" type="reset"/>
 
                 <p:growl>
@@ -34,8 +34,8 @@
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
             <h:form id="logoutForm">
 
-                <h:outputText value="Welcome, #{sessionScope.currentCustomer.firstName} #{sessionScope.currentCustomer.lastName}"/>&nbsp;
-                <p:commandButton value="Logout" actionListener="#{customerLoginManagedBean.logout}" icon="pi pi-sign-out" />
+                <h:outputText value="Welcome, #{sessionScope.currentStaff.firstName} #{sessionScope.currentStaff.lastName}"/>&nbsp;
+                <p:commandButton value="Logout" actionListener="#{staffLoginManagedBean.logout}" icon="pi pi-sign-out" />
 
             </h:form>
         </h:panelGroup>
