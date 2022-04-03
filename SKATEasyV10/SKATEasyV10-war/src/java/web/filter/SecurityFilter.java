@@ -58,6 +58,7 @@ public class SecurityFilter implements Filter {
                 || path.equals("/accessRightError.xhtml")
                 || path.startsWith("/javax.faces.resource")
                 || path.equals("/saleTransactions/viewAllSaleTransactions.xhtml")) {
+
             return true;
         } else {
             return false;
