@@ -9,13 +9,15 @@
 
     <ui:define name="content">
 
-        <div style="text-align: center">
+        <div>
             <h3>View All Customers</h3>
             <p:messages>
                 <p:autoUpdate/>
             </p:messages>
             <h:form id="formAllCustomers">
-                <p:dataTable id="dataTableAllCustomers" value="#{viewAllCustomersManagedBean.customerEntities}" var="lineItem" rowIndexVar="rindex">
+                <br/>
+                <p:dataTable id="dataTableAllCustomers" value="#{viewAllCustomersManagedBean.customerEntities}" var="lineItem" rowIndexVar="rindex" rowKey="#{lineItem.customerId}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
                     <p:column headerText="Customer ID" sortBy="#{lineItem.customerId}" style="text-align: center">
                         <h:outputText value="#{lineItem.customerId}"/>
