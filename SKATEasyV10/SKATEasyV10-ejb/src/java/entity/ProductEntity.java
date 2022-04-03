@@ -35,6 +35,10 @@ public class ProductEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+    @Column(nullable = false, unique = true, length = 7)
+    @NotNull
+    @Size(min = 7, max = 7)
+    private String skuCode;
     @Column(nullable = false, length = 64)
     @NotNull
     @Size(max = 64)
@@ -83,7 +87,8 @@ public class ProductEntity implements Serializable {
         this.productName = productName;
     }
 
-    public ProductEntity(String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating, CategoryEntity categoryEntity) {
+    public ProductEntity(String skuCode, String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating, CategoryEntity categoryEntity) {
+        this.skuCode = skuCode;
         this.productName = productName;
         this.description = description;
         this.quantityOnHand = quantityOnHand;
@@ -95,7 +100,39 @@ public class ProductEntity implements Serializable {
     }
     
     
-
+    public void addTag(TagEntity tagEntity)
+    {
+        if(tagEntity != null)
+        {
+            if(!this.tagEntities.contains(tagEntity))
+            {
+                this.tagEntities.add(tagEntity);
+                
+                if(!tagEntity.getProductEntities().contains(this))
+                {                    
+                    tagEntity.getProductEntities().add(this);
+                }
+            }
+        }
+    }
+    
+    
+    
+    public void removeTag(TagEntity tagEntity)
+    {
+        if(tagEntity != null)
+        {
+            if(this.tagEntities.contains(tagEntity))
+            {
+                this.tagEntities.remove(tagEntity);
+                
+                if(tagEntity.getProductEntities().contains(this))
+                {
+                    tagEntity.getProductEntities().remove(this);
+                }
+            }
+        }
+    }
     
     
     public Long getProductId() {
@@ -256,5 +293,20 @@ public class ProductEntity implements Serializable {
     public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
     }
-    
+
+    /**
+     * @return the skuCode
+     */
+    public String getSkuCode() {
+        return skuCode;
+    }
+
+    /**
+     * @param skuCode the skuCode to set
+     */
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
+    }
+
+ 
 }
