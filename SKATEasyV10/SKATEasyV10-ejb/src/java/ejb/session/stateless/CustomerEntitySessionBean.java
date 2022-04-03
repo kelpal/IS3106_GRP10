@@ -5,7 +5,7 @@
  */
 package ejb.session.stateless;
 
-import entity.ArtistEntity;
+import entity.CustomerEntity;
 import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -18,18 +18,18 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.exception.ArtistNotFoundException;
-import util.exception.ArtistUsernameExistException;
+import util.exception.CustomerNotFoundException;
+import util.exception.CustomerUsernameExistException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.UnknownPersistenceException;
 
 /**
  *
- * @author harmo
+ * @author kel
  */
 @Stateless
-public class ArtistEntitySessionBean implements ArtistEntitySessionBeanLocal {
+public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal {
 
     @PersistenceContext(unitName = "SKATEasyV10-ejbPU")
     private EntityManager em;
@@ -37,27 +37,24 @@ public class ArtistEntitySessionBean implements ArtistEntitySessionBeanLocal {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
     
-    
-    
-    public ArtistEntitySessionBean()
-    {
+    public CustomerEntitySessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
     
     @Override
-    public Long createNewArtist(ArtistEntity newArtistEntity) throws ArtistUsernameExistException, UnknownPersistenceException, InputDataValidationException
+    public Long createNewCustomer(CustomerEntity newCustomerEntity) throws CustomerUsernameExistException, UnknownPersistenceException, InputDataValidationException
     {
-        Set<ConstraintViolation<ArtistEntity>>constraintViolations = validator.validate(newArtistEntity);
+        Set<ConstraintViolation<CustomerEntity>>constraintViolations = validator.validate(newCustomerEntity);
         
         if(constraintViolations.isEmpty())
         {
             try
             {
-                em.persist(newArtistEntity);
+                em.persist(newCustomerEntity);
                 em.flush();
 
-                return newArtistEntity.getArtistId();
+                return newCustomerEntity.getCustomerId();
             }
             catch(PersistenceException ex)
             {
@@ -65,7 +62,7 @@ public class ArtistEntitySessionBean implements ArtistEntitySessionBeanLocal {
                 {
                     if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
                     {
-                        throw new ArtistUsernameExistException();
+                        throw new CustomerUsernameExistException();
                     }
                     else
                     {
@@ -87,44 +84,44 @@ public class ArtistEntitySessionBean implements ArtistEntitySessionBeanLocal {
         
 
     @Override
-    public ArtistEntity artistLogin(String username, String password) throws InvalidLoginCredentialException
+    public CustomerEntity customerLogin(String username, String password) throws InvalidLoginCredentialException
     {
         try
         {
-            ArtistEntity artistEntity = retrieveArtistByUsername(username);
+            CustomerEntity customerEntity = retrieveCustomerByUsername(username);
             
-            if(artistEntity.getPassword().equals(password))
+            if(customerEntity.getPassword().equals(password))
             {
                 //artistEntity.getSaleTransactionEntities().size();                
-                return artistEntity;
+                return customerEntity;
             }
             else
             {
                 throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
             }
         }
-        catch(ArtistNotFoundException ex)
+        catch(CustomerNotFoundException ex)
         {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
         }
     }
     
     @Override
-    public ArtistEntity retrieveArtistByUsername(String username) throws ArtistNotFoundException
+    public CustomerEntity retrieveCustomerByUsername(String username) throws CustomerNotFoundException
     {
-        Query query = em.createQuery("SELECT a FROM ArtistEntity a WHERE a.username = :inUsername");
+        Query query = em.createQuery("SELECT a FROM CustomerEntity a WHERE a.username = :inUsername");
         query.setParameter(":inUsername", username);
         
         
         try {
-            return (ArtistEntity)query.getSingleResult();
+            return (CustomerEntity)query.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex)
         {
-            throw new ArtistNotFoundException("Artist Username" + username + " cannot be found!");
+            throw new CustomerNotFoundException("Artist Username" + username + " cannot be found!");
         }
     }
     
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ArtistEntity>> constraintViolations)
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<CustomerEntity>> constraintViolations)
     {
         String msg = "Input data validation error!:";
             
@@ -135,8 +132,9 @@ public class ArtistEntitySessionBean implements ArtistEntitySessionBeanLocal {
         
         return msg;
     }
-
+    
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-}
 
+    
+}
