@@ -2,10 +2,62 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                template="./../template/defaultTemplate.xhtml">
+                template="./../template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        content
+        <div>
+            <h3>View All Sale Transactions</h3>
+            
+            <h:form id='formMain'>
+                <br/>
+                
+                <p:dataTable id='dataTableMain' widgetVar='dataTableMain' value='#{viewAllSaleTransactionsManagedBean.saleTransactions}' var="salesTransaction" rowKey="#{salesTransaction.saleTransactionId}"
+                             rowIndexVar="row" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                
+                    <p:messages />
+                    
+                    <p:column headerText="Transaction ID" sortBy="#{salesTransaction.saleTransactionId}">
+                        <h:outputText value="#{salesTransaction.saleTransactionId}" />
+                    </p:column>
+                    
+                    <p:column headerText="Total Line Items" sortBy="#{salesTransaction.totalLineItem}">
+                        <h:outputText value="#{salesTransaction.totalLineItem}" />
+                    </p:column>
+                    
+                    <p:column headerText="Total Quantity" sortBy="#{salesTransaction.totalQuantity}">
+                        <h:outputText value="#{salesTransaction.totalQuantity}" />
+                    </p:column>
+                    
+                    <p:column headerText="Total Amount" sortBy="#{salesTransaction.totalAmount}">
+                        <h:outputText value="#{salesTransaction.totalAmount}" />
+                    </p:column>
+                    
+                    <p:column headerText="Transaction Date" sortBy="#{salesTransaction.transactionDateTime}">
+                        <h:outputText value="#{salesTransaction.transactionDateTime}" />
+                    </p:column>
+                    
+                    <p:column headerText="Void / Refund" sortBy="#{salesTransaction.voidRefund}">
+                        <h:outputText value="#{salesTransaction.voidRefund}" />
+                    </p:column>
+                    
+                    <p:column headerText="Action" >
+                        <p:commandButton value='Refund' actionListener='#{viewAllSaleTransactionsManagedBean.doRefund}' update='@form formMain:dataTableMain' rendered="#{salesTransaction.voidRefund == false}">
+                            <f:attribute name="saleTransactionToRefund" value='#{salesTransaction}'/>
+                        </p:commandButton>
+                        
+                        <p:growl>
+                            <p:autoUpdate/>
+                        </p:growl>
+                        
+                    </p:column>
+                
+                </p:dataTable>
+                
+            </h:form>
+        </div>
     </ui:define>
 
 </ui:composition>
