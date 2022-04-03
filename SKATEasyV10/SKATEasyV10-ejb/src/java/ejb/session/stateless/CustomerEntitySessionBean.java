@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.CustomerEntity;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -104,6 +105,14 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
         {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
         }
+    }
+    
+    @Override
+    public List<CustomerEntity> retrieveAllCustomers() {
+        Query query = em.createQuery("SELECT c FROM CustomerEntity c ORDER BY c.customerId ASC");
+        List<CustomerEntity> customerEntities = query.getResultList();
+        
+       return customerEntities;
     }
     
     @Override
