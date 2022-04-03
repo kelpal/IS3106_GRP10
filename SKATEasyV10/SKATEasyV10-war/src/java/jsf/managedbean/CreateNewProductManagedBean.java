@@ -37,8 +37,7 @@ public class CreateNewProductManagedBean {
     //action listener method
     public void doCreateNewProduct(ActionEvent event)
     {
-        Long newProductId = productEntitySessionBeanLocal.createNewProduct(newProductEntity);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created: " + newProductId, "New product created: " + newProductId));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created: ", null));
     }
     
     
