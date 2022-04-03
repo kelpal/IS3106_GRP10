@@ -14,39 +14,48 @@
             <h:form id='formMain'>
                 <br/>
                 
-                <p:dataTable id='dataTableMain' widgetVar='dataTableMain' value='#{viewAllSaleTransactionsManagedBean.saleTransactions}' var="salesTransaction" rowKey="#{salesTransaction.saleTransactionId}"
+                <p:dataTable id='dataTableMain' widgetVar='dataTableMain' value='#{viewAllSaleTransactionsManagedBean.saleTransactions}' var="saleTransaction" rowKey="#{salesTransaction.saleTransactionId}"
                              rowIndexVar="row" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
                 
                     <p:messages />
                     
-                    <p:column headerText="Transaction ID" sortBy="#{salesTransaction.saleTransactionId}">
-                        <h:outputText value="#{salesTransaction.saleTransactionId}" />
+                    <p:column headerText="Transaction ID" sortBy="#{saleTransaction.saleTransactionId}">
+                        <h:outputText value="#{saleTransaction.saleTransactionId}" />
                     </p:column>
                     
-                    <p:column headerText="Total Line Items" sortBy="#{salesTransaction.totalLineItem}">
-                        <h:outputText value="#{salesTransaction.totalLineItem}" />
+                    <p:column headerText="Total Line Items" sortBy="#{saleTransaction.totalLineItem}">
+                        <h:outputText value="#{saleTransaction.totalLineItem}" />
                     </p:column>
                     
-                    <p:column headerText="Total Quantity" sortBy="#{salesTransaction.totalQuantity}">
-                        <h:outputText value="#{salesTransaction.totalQuantity}" />
+                    <p:column headerText="Total Quantity" sortBy="#{saleTransaction.totalQuantity}">
+                        <h:outputText value="#{saleTransaction.totalQuantity}" />
                     </p:column>
                     
-                    <p:column headerText="Total Amount" sortBy="#{salesTransaction.totalAmount}">
-                        <h:outputText value="#{salesTransaction.totalAmount}" />
+                    <p:column headerText="Total Amount" sortBy="#{saleTransaction.totalAmount}">
+                        <h:outputText value="#{saleTransaction.totalAmount}" />
                     </p:column>
                     
-                    <p:column headerText="Transaction Date" sortBy="#{salesTransaction.transactionDateTime}">
-                        <h:outputText value="#{salesTransaction.transactionDateTime}" />
+                    <p:column headerText="Transaction Date" sortBy="#{saleTransaction.transactionDateTime}">
+                        <h:outputText value="#{saleTransaction.transactionDateTime}" />
                     </p:column>
                     
-                    <p:column headerText="Void / Refund" sortBy="#{salesTransaction.voidRefund}">
-                        <h:outputText value="#{salesTransaction.voidRefund}" />
+                    <p:column headerText="Void / Refund" sortBy="#{saleTransaction.voidRefund}">
+                        <h:outputText value="#{saleTransaction.voidRefund}" />
                     </p:column>
                     
                     <p:column headerText="Action" >
-                        <p:commandButton value='Refund' actionListener='#{viewAllSaleTransactionsManagedBean.doRefund}' update='@form formMain:dataTableMain' rendered="#{salesTransaction.voidRefund == false}">
-                            <f:attribute name="saleTransactionToRefund" value='#{salesTransaction}'/>
+                        <p:commandButton oncomplete="PF('dialogViewLineEntities').show()" icon="ui-icon-document" title="View" actionListener="#{viewAllSaleTransactionsManagedBean.viewSaleTransaction}">
+                            <f:attribute value="#{saleTransaction}" name="saleTransactionToView" />
                         </p:commandButton>
+                        <p:commandButton value='Refund' actionListener='#{viewAllSaleTransactionsManagedBean.doRefund}' update='@form formMain:dataTableMain'>
+                            <f:attribute name="saleTransactionToRefund" value='#{salesTransaction}'/>
+                            <p:confirm header="Confirmation" message="Are you sure you want to refund #{saleTransaction.saleTransactionId}?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
                         
                         <p:growl>
                             <p:autoUpdate/>
@@ -56,6 +65,39 @@
                 
                 </p:dataTable>
                 
+            </h:form>
+        </div>
+        
+        <div>
+            <h:form id="formViewLineEntities">
+                <p:dialog id="dialogViewLineEntities" widgetVar="dialogViewLineEntities" header="View Items" closable="true">
+                    <p:dataTable id='dataTableMain' widgetVar='dataTableMain' value='#{viewAllSaleTransactionsManagedBean.saleTransactionToView.saleTransactionLineItemEntities}' var="stli" rowKey="#{stli.serialNumber}"
+                             rowIndexVar="row" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                
+                    <p:messages />
+                    
+                    <p:column headerText="Serial Number" sortBy="#{stli.serialNumber}">
+                        <h:outputText value="#{stli.serialNumber}" />
+                    </p:column>
+                    
+                    <p:column headerText="Name of Product" sortBy="#{stli.productEntity.productName}">
+                        <h:outputText value="#{stli.productEntity.productName}" />
+                    </p:column>
+                    
+                    <p:column headerText="Unit Price" sortBy="#{stli.unitPrice}">
+                        <h:outputText value="#{stli.unitPrice}" />
+                    </p:column>
+                    
+                    <p:column headerText="Quantity" sortBy="#{stli.quantity}">
+                        <h:outputText value="#{stli.quantity}" />
+                    </p:column>
+                    
+                    <p:column headerText="Sub Total" sortBy="#{stli.subTotal}">
+                        <h:outputText value="#{stli.subTotal}" />
+                    </p:column>
+                    
+                    </p:dataTable>
+                </p:dialog>
             </h:form>
         </div>
     </ui:define>

@@ -33,6 +33,8 @@ public class ViewAllSaleTransactionsManagedBean implements Serializable {
     private SaleTransactionEntitySessionBeanLocal saleTransactionEntitySessionBeanLocal;
     
     private List<SaleTransactionEntity> saleTransactions;
+    
+    private SaleTransactionEntity saleTransactionToView;
 
     /**
      * Creates a new instance of ViewAllSaleTransactionsManagedBean
@@ -51,6 +53,11 @@ public class ViewAllSaleTransactionsManagedBean implements Serializable {
         this.saleTransactions = saleTransactionEntitySessionBeanLocal.retrieveAllSaleTransactions();
         return this.saleTransactions;
 
+    }
+    
+    public void viewSaleTransaction(ActionEvent event)
+    {
+        saleTransactionToView = (SaleTransactionEntity)event.getComponent().getAttributes().get("saleTransactionToView");
     }
     
     public void doRefund(ActionEvent event)
@@ -74,6 +81,20 @@ public class ViewAllSaleTransactionsManagedBean implements Serializable {
      */
     public void setSaleTransactions(List<SaleTransactionEntity> saleTransactions) {
         this.saleTransactions = saleTransactions;
+    }
+
+    /**
+     * @return the saleTransactionToView
+     */
+    public SaleTransactionEntity getSaleTransactionToView() {
+        return saleTransactionToView;
+    }
+
+    /**
+     * @param saleTransactionToView the saleTransactionToView to set
+     */
+    public void setSaleTransactionToView(SaleTransactionEntity saleTransactionToView) {
+        this.saleTransactionToView = saleTransactionToView;
     }
     
 }
