@@ -20,12 +20,21 @@
                     </p:submenu>
                     
                     <p:submenu label="Customers"  rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="View All Customers" icon="pi pi-user" outcome="/customers/viewAllCustomers.xhtml"/>
+                        <p:menuitem value="View All Customers" icon="pi pi-users" outcome="/customers/viewAllCustomers.xhtml"/>
                     </p:submenu>
                     
                     <p:submenu label="Sale Transactions"  rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="View All Sale Transactions" icon="pi pi-table" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
-                    </p:submenu>  
+                    </p:submenu>
+                    
+                    <p:submenu label="Board Customisation"  rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="View All Artists" icon="pi pi-users" outcome="/boardCustomisation/viewAllArtists.xhtml"/>
+                        <p:menuitem value="View All Customisation Requests" icon="pi pi-image" outcome="/boardCustomisation/viewAllCustomisationRequests.xhtml"/>
+                    </p:submenu>
+                    
+                    <p:submenu label="Staff"  rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="View All Staff" icon="pi pi-users" outcome="/staff/viewAllStaff.xhtml"/>
+                    </p:submenu>
 
                 </p:menu>
 
