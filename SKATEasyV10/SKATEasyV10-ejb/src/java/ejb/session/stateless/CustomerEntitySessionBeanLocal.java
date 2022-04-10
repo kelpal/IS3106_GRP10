@@ -20,10 +20,12 @@ import util.exception.UnknownPersistenceException;
 @Local
 public interface CustomerEntitySessionBeanLocal {
 
-    public Long createNewCustomer(CustomerEntity newCustomerEntity) throws CustomerUsernameExistException, UnknownPersistenceException, InputDataValidationException;
+    public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws CustomerUsernameExistException, UnknownPersistenceException, InputDataValidationException;
 
     public CustomerEntity customerLogin(String username, String password) throws InvalidLoginCredentialException;
 
     public CustomerEntity retrieveCustomerByUsername(String username) throws CustomerNotFoundException;
+
+    public CustomerEntity retrieveCustomerById(Long employeeId) throws CustomerNotFoundException;
     
 }

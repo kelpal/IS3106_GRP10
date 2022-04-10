@@ -48,14 +48,14 @@ public class CoachingSessionEntity extends ProductEntity implements Serializable
         this.session = session;
     }
 
-    public CoachingSessionEntity(DayOfWeekEnum dayOfWeek, SessionNumberEnum session, String skuCode, String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating, CategoryEntity categoryEntity) {
-        super(skuCode, productName, description, quantityOnHand, reorderQuantity, unitPrice, originalPrice, productRating, categoryEntity);
+    public CoachingSessionEntity(DayOfWeekEnum dayOfWeek, SessionNumberEnum session, String skuCode, String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating) {
+        super(skuCode, productName, description, quantityOnHand, reorderQuantity, unitPrice, originalPrice, productRating);
         this.dayOfWeek = dayOfWeek;
         this.session = session;
     }
     
     /**
-     * @return the dayOfWeek
+     * @return the dayOfWeekss
      */
     public DayOfWeekEnum getDayOfWeek() {
         return dayOfWeek;

@@ -43,7 +43,7 @@ public class CategoryEntitySessionBean implements CategoryEntitySessionBeanLocal
     }
     
     @Override
-    public Long createNewCategoryEntity(CategoryEntity newCategoryEntity, Long parentCategoryId) throws InputDataValidationException, CreateNewCategoryException
+    public CategoryEntity createNewCategoryEntity(CategoryEntity newCategoryEntity, Long parentCategoryId) throws InputDataValidationException, CreateNewCategoryException
     {
         Set<ConstraintViolation<CategoryEntity>>constraintViolations = validator.validate(newCategoryEntity);
         
@@ -66,7 +66,7 @@ public class CategoryEntitySessionBean implements CategoryEntitySessionBeanLocal
                 em.persist(newCategoryEntity);
                 em.flush();
 
-                return newCategoryEntity.getCategoryId();
+                return newCategoryEntity;
             }
             catch(PersistenceException ex)
             {                

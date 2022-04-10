@@ -6,145 +6,80 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import util.enumeration.AccessRightEnum;
 
 /**
  *
  * @author harmo
  */
 @Entity
-public class ArtistEntity implements Serializable {
+public class ArtistEntity extends StaffEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long artistId;
-    @Column(nullable = false, length = 32)
-    @NotNull
-    @Size(max = 32)
-    private String name;
-    @Column(nullable = false, unique = true, length = 64)
-    @NotNull
-    @Size(max = 64)
-    @Email
-    private String email;
-    @Column(nullable = false, unique = true, length = 32)
-    @NotNull
-    @Size(min = 4, max = 32)
-    private String username;
-    @Column(nullable = false, length = 32)
-    @NotNull
-    @Size(min = 8, max = 32)
-    private String password; 
+    @Column(length = 128)
+    @Size(max = 128)
+    private String portfolio;
+    
+    @OneToMany(mappedBy = "artistEntity", fetch = FetchType.LAZY)
+    private List<CustomisationRequest> customisationRequests;
 
     public ArtistEntity() {
     }
 
-    public ArtistEntity(String name, String email, String username, String password) {
-        this();
-        
-        this.name = name;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-    }
-    
-    
-
-    public Long getArtistId() {
-        return artistId;
+    public ArtistEntity(String portfolio, List<CustomisationRequest> customisationRequests) {
+        this.portfolio = portfolio;
+        this.customisationRequests = customisationRequests;
     }
 
-    public void setArtistId(Long artistId) {
-        this.artistId = artistId;
+    public ArtistEntity(String portfolio, List<CustomisationRequest> customisationRequests, String firstName, String lastName, AccessRightEnum accessRightEnum, String username, String password) {
+        super(firstName, lastName, accessRightEnum, username, password);
+        this.portfolio = portfolio;
+        this.customisationRequests = customisationRequests;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (artistId != null ? artistId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ArtistEntity)) {
-            return false;
-        }
-        ArtistEntity other = (ArtistEntity) object;
-        if ((this.artistId == null && other.artistId != null) || (this.artistId != null && !this.artistId.equals(other.artistId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.ArtistEntity[ id=" + artistId + " ]";
+    public ArtistEntity(String firstName, String lastName, AccessRightEnum accessRightEnum, String username, String password) {
+        super(firstName, lastName, accessRightEnum, username, password);
     }
 
     /**
-     * @return the name
+     * @return the portfolio
      */
-    public String getName() {
-        return name;
+    public String getPortfolio() {
+        return portfolio;
     }
 
     /**
-     * @param name the name to set
+     * @param portfolio the portfolio to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setPortfolio(String portfolio) {
+        this.portfolio = portfolio;
     }
 
     /**
-     * @return the email
+     * @return the customisationRequests
      */
-    public String getEmail() {
-        return email;
+    public List<CustomisationRequest> getCustomisationRequests() {
+        return customisationRequests;
     }
 
     /**
-     * @param email the email to set
+     * @param customisationRequests the customisationRequests to set
      */
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCustomisationRequests(List<CustomisationRequest> customisationRequests) {
+        this.customisationRequests = customisationRequests;
     }
 
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
+   
 
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    
 }

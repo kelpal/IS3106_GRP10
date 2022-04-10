@@ -49,8 +49,12 @@ public class CustomerEntity {
     @OneToMany(mappedBy = "customerEntity")
     private List<SaleTransactionEntity> saleTransactionEntities;
 
+    @OneToMany(mappedBy = "customerEntity")
+    private List<CustomisationRequest> customisationRequests;
+    
     public CustomerEntity() {
         this.saleTransactionEntities = new ArrayList<>();
+        this.customisationRequests = new ArrayList<>();
     }
 
     public CustomerEntity(String name, String email, String username, String password) {
@@ -141,6 +145,20 @@ public class CustomerEntity {
      */
     public void setSaleTransactionEntities(List<SaleTransactionEntity> saleTransactionEntities) {
         this.saleTransactionEntities = saleTransactionEntities;
+    }
+
+    /**
+     * @return the customisationRequests
+     */
+    public List<CustomisationRequest> getCustomisationRequests() {
+        return customisationRequests;
+    }
+
+    /**
+     * @param customisationRequests the customisationRequests to set
+     */
+    public void setCustomisationRequests(List<CustomisationRequest> customisationRequests) {
+        this.customisationRequests = customisationRequests;
     }
     
     

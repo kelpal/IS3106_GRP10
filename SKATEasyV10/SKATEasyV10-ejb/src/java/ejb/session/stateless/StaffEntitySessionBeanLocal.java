@@ -23,7 +23,7 @@ import util.exception.UpdateStaffException;
 @Local
 public interface StaffEntitySessionBeanLocal {
     
-    public Long createNewStaff(StaffEntity newStaffEntity) throws StaffUsernameExistException, UnknownPersistenceException, InputDataValidationException;
+    public StaffEntity createNewStaff(StaffEntity newStaffEntity) throws StaffUsernameExistException, UnknownPersistenceException, InputDataValidationException;
     public List<StaffEntity> retrieveAllStaffs();    
     public StaffEntity retrieveStaffByStaffId(Long staffId) throws StaffNotFoundException;
     public StaffEntity retrieveStaffByUsername(String username) throws StaffNotFoundException;

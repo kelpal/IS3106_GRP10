@@ -9,8 +9,9 @@ package util.enumeration;
  *
  * @author harmo
  */
-public enum AccessRightEnum {
-    STAFF,
-    ADMINISTRATOR,
-    ARTIST
+public enum StatusEnum {
+    PENDING,
+    ACCEPTED,
+    COMPLETED,
+    REJECTED
 }

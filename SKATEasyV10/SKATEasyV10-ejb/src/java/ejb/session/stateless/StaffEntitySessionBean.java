@@ -52,7 +52,7 @@ public class StaffEntitySessionBean implements StaffEntitySessionBeanLocal {
     // Updated in v4.2 with bean validation
     
     @Override
-    public Long createNewStaff(StaffEntity newStaffEntity) throws StaffUsernameExistException, UnknownPersistenceException, InputDataValidationException
+    public StaffEntity createNewStaff(StaffEntity newStaffEntity) throws StaffUsernameExistException, UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<StaffEntity>>constraintViolations = validator.validate(newStaffEntity);
         
@@ -63,7 +63,7 @@ public class StaffEntitySessionBean implements StaffEntitySessionBeanLocal {
                 entityManager.persist(newStaffEntity);
                 entityManager.flush();
 
-                return newStaffEntity.getStaffId();
+                return newStaffEntity;
             }
             catch(PersistenceException ex)
             {

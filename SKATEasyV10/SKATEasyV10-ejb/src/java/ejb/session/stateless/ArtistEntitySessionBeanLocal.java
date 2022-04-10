@@ -20,9 +20,9 @@ import util.exception.UnknownPersistenceException;
 @Local
 public interface ArtistEntitySessionBeanLocal {
     
-    public Long createNewArtist(ArtistEntity newArtistEntity) throws ArtistUsernameExistException, UnknownPersistenceException, InputDataValidationException;
-    
-    public ArtistEntity artistLogin(String username, String password) throws InvalidLoginCredentialException;
+    public ArtistEntity createNewArtist(ArtistEntity newArtistEntity) throws ArtistUsernameExistException, UnknownPersistenceException, InputDataValidationException;
     
     public ArtistEntity retrieveArtistByUsername(String username) throws ArtistNotFoundException;
+
+    public ArtistEntity retrieveArtistById(Long artistId) throws ArtistNotFoundException;
 }

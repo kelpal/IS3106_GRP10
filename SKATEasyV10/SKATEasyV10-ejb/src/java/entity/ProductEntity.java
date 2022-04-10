@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -29,6 +31,7 @@ import javax.validation.constraints.Size;
  * @author kel
  */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class ProductEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -87,7 +90,7 @@ public class ProductEntity implements Serializable {
         this.productName = productName;
     }
 
-    public ProductEntity(String skuCode, String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating, CategoryEntity categoryEntity) {
+    public ProductEntity(String skuCode, String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating) {
         this.skuCode = skuCode;
         this.productName = productName;
         this.description = description;
@@ -96,7 +99,6 @@ public class ProductEntity implements Serializable {
         this.unitPrice = unitPrice;
         this.originalPrice = originalPrice;
         this.productRating = productRating;
-        this.categoryEntity = categoryEntity;
     }
     
     

@@ -42,8 +42,9 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
         validator = validatorFactory.getValidator();
     }
     
+    
     @Override
-    public Long createNewCustomer(CustomerEntity newCustomerEntity) throws CustomerUsernameExistException, UnknownPersistenceException, InputDataValidationException
+    public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws CustomerUsernameExistException, UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<CustomerEntity>>constraintViolations = validator.validate(newCustomerEntity);
         
@@ -54,7 +55,7 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
                 em.persist(newCustomerEntity);
                 em.flush();
 
-                return newCustomerEntity.getCustomerId();
+                return newCustomerEntity;
             }
             catch(PersistenceException ex)
             {
@@ -120,6 +121,22 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
             throw new CustomerNotFoundException("Artist Username" + username + " cannot be found!");
         }
     }
+    
+    @Override
+    public CustomerEntity retrieveCustomerById(Long employeeId) throws CustomerNotFoundException
+    {
+        CustomerEntity customer = em.find(CustomerEntity.class, employeeId);
+        
+        if(customer != null)
+        {
+            return customer;
+        }
+        else
+        {
+            throw new CustomerNotFoundException("Customer ID " + employeeId + " does not exist");
+        }
+    }
+    
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<CustomerEntity>> constraintViolations)
     {
