@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/defaultTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <div>
+            <h3>View All Sale Transactions</h3>
+            
+            <h:form id='formMain'>
+                <br/>
+                
+                <p:dataTable id='dataTableMain' widgetVar='dataTableMain' value='#{viewMyRequestsManagedBean.customisationRequests}' var="request" rowKey="#{request.customisationRequestId}"
+                             rowIndexVar="row" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                
+                    <p:messages />
+                    
+                    <p:column headerText="Customer ID" sortBy="#{request.customerEntiity}">
+                        <h:outputText value="#{request.customerEntiity}" />
+                    </p:column>
+                    
+                    <p:column headerText="Customer Name" sortBy="#{request.customerEntiity.firstName}">
+                        <h:outputText value="#{request.customerEntiity.firstName}" />
+                    </p:column>
+                    
+                    <p:column headerText="Request Date" sortBy="#{request.requestDate}">
+                        <h:outputText value="#{request.requestDate}" />
+                    </p:column>
+                    
+                    <p:column headerText="Status" sortBy="#{request.status}">
+                        <h:outputText value="#{request.status}" />
+                    </p:column>
+                    
+                    <p:column headerText="Rejection Reason" sortBy="#{request.rejectionReason}">
+                        <h:outputText value="#{request.rejectionReason}" />
+                    </p:column>
+                    
+                    <p:column headerText="Action" >
+                        
+                        
+                    </p:column>
+                
+                </p:dataTable>
+                
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

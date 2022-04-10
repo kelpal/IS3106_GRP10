@@ -22,6 +22,10 @@
                     <p:submenu label="Orders"  rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="View All SaleTransaction" icon="pi pi-table" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
                     </p:submenu>  
+                    
+                    <p:submenu label="Artist"  rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="View My Requests" icon="pi pi-table" outcome="/artist/viewMyRequests.xhtml"/>
+                    </p:submenu>  
 
                 </p:menu>
 
