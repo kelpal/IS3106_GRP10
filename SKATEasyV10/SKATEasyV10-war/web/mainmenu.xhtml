@@ -15,13 +15,26 @@
                     <p:menuitem value="Home" outcome="/index" icon="pi pi-home" />
 
                     <p:submenu label="Products"  rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="View All Products" icon="pi pi-book" outcome="/products/viewAllProducts.xhtml"/>
+                        <p:menuitem value="View All Products" icon="pi pi-briefcase" outcome="/products/viewAllProducts.xhtml"/>
                         <p:menuitem value="Create New Product" icon="pi pi-plus" outcome="/products/createNewProduct.xhtml"/>
                     </p:submenu>
                     
-                    <p:submenu label="Orders"  rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="View All SaleTransaction" icon="pi pi-table" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
-                    </p:submenu>  
+                    <p:submenu label="Customers"  rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="View All Customers" icon="pi pi-users" outcome="/customers/viewAllCustomers.xhtml"/>
+                    </p:submenu>
+                    
+                    <p:submenu label="Sale Transactions"  rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="View All Sale Transactions" icon="pi pi-table" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
+                    </p:submenu>
+                    
+                    <p:submenu label="Board Customisation"  rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="View All Artists" icon="pi pi-users" outcome="/boardCustomisation/viewAllArtists.xhtml"/>
+                        <p:menuitem value="View All Customisation Requests" icon="pi pi-image" outcome="/boardCustomisation/viewAllCustomisationRequests.xhtml"/>
+                    </p:submenu>
+                    
+                    <p:submenu label="Staff"  rendered="#{sessionScope.isLogin == true}">
+                        <p:menuitem value="View All Staff" icon="pi pi-users" outcome="/staff/viewAllStaff.xhtml"/>
+                    </p:submenu>
 
                 </p:menu>
 
