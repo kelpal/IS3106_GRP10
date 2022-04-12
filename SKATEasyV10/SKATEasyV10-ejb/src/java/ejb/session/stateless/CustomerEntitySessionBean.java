@@ -27,7 +27,7 @@ import util.exception.UnknownPersistenceException;
 
 /**
  *
- * @author kel
+ * @author kl
  */
 @Stateless
 public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal {
