@@ -16,23 +16,23 @@
             </p:messages>
             <h:form id="formAllCustomers">
                 <br/>
-                <p:dataTable id="dataTableAllCustomers" value="#{viewAllCustomersManagedBean.customerEntities}" var="lineItem" rowIndexVar="rindex" rowKey="#{lineItem.customerId}"
+                <p:dataTable id="dataTableAllCustomers" value="#{viewAllCustomersManagedBean.customerEntities}" var="customer" rowIndexVar="rindex" rowKey="#{customer.customerId}"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
-                    <p:column headerText="Customer ID" sortBy="#{lineItem.customerId}" style="text-align: center">
-                        <h:outputText value="#{lineItem.customerId}"/>
+                    <p:column headerText="Customer ID" sortBy="#{customer.customerId}" style="text-align: center">
+                        <h:outputText value="#{customer.customerId}"/>
                     </p:column>
                     
-                    <p:column headerText="Username" sortBy="#{lineItem.username}" style="text-align: center">
-                        <h:outputText value="#{lineItem.username}" />
+                    <p:column headerText="Username" sortBy="#{customer.username}" style="text-align: center">
+                        <h:outputText value="#{customer.username}" />
                     </p:column>
 
-                    <p:column headerText="Email" sortBy="#{lineItem.email}" style="text-align: center">
-                        <h:outputText value="#{lineItem.email}" />
+                    <p:column headerText="Email" sortBy="#{customer.email}" style="text-align: center">
+                        <h:outputText value="#{customer.email}" />
                     </p:column>           
                     
-                    <p:column headerText="Name" sortBy="#{lineItem.name}" style="text-align: center">
-                        <h:outputText value="#{lineItem.name}" />
+                    <p:column headerText="Name" sortBy="#{customer.name}" style="text-align: center">
+                        <h:outputText value="#{customer.name}" />
                     </p:column>
 
 

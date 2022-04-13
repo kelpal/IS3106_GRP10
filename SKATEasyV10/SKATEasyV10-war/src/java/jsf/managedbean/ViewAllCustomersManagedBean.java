@@ -7,6 +7,7 @@ package jsf.managedbean;
 
 import ejb.session.stateless.CustomerEntitySessionBeanLocal;
 import entity.CustomerEntity;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -29,6 +30,7 @@ public class ViewAllCustomersManagedBean {
      * Creates a new instance of ViewAllCustomersManagedBean
      */
     public ViewAllCustomersManagedBean() {
+        this.customerEntities = new ArrayList<>();
     }
     
     @PostConstruct

@@ -24,6 +24,7 @@
                     
                     <p:submenu label="Operations"  rendered="#{sessionScope.accessRight == 'STAFF' || sessionScope.accessRight == 'ADMINISTRATOR'}">
                         <p:menuitem value="View All Sale Transaction" icon="pi pi-table" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
+                        <p:menuitem value="View All Customers" icon="pi pi-table" outcome="/customers/viewAllCustomers.xhtml"/>
                     </p:submenu>  
                     
                     <p:submenu label="Artist"  rendered="#{sessionScope.accessRight == 'ARTIST'}">
