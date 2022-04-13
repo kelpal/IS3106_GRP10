@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.ArtistEntity;
 import entity.CustomerEntity;
 import entity.CustomisationRequest;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -99,6 +100,16 @@ public class CustomisationRequestSessionBean implements CustomisationRequestSess
         {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
+    }
+    
+    @Override
+    public List<CustomisationRequest> retreiveCustomisationRequests(Long artistId) throws ArtistNotFoundException
+    {
+
+        ArtistEntity artist = artistEntitySessionBeanLocal.retrieveArtistById(artistId);
+
+        return artist.getCustomisationRequests();
+
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<CustomisationRequest>> constraintViolations)

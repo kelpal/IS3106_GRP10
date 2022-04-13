@@ -31,5 +31,7 @@ public interface StaffEntitySessionBeanLocal {
     public void updateStaff(StaffEntity staffEntity) throws StaffNotFoundException, UpdateStaffException, InputDataValidationException;
     public void deleteStaff(Long staffId) throws StaffNotFoundException, DeleteStaffException;
 
+    public void updateProfile(StaffEntity staffEntity);
+
     
 }
