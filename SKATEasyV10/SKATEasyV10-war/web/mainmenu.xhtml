@@ -23,7 +23,9 @@
                     </p:submenu>
                     
                     <p:submenu label="Operations"  rendered="#{sessionScope.accessRight == 'STAFF' || sessionScope.accessRight == 'ADMINISTRATOR'}">
-                        <p:menuitem value="View All Sale Transaction" icon="pi pi-table" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
+                        <p:menuitem value="View All Sale Transaction" icon="pi pi-shopping-cart" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
+                        <p:menuitem value="Customer Management" icon="pi pi-users" outcome="/customers/viewAllCustomers.xhtml"/>
+                        <p:menuitem value="Product Management" icon="pi pi-table" outcome="/products/productManagement.xhtml"/>
                     </p:submenu>  
                     
                     <p:submenu label="Artist"  rendered="#{sessionScope.accessRight == 'ARTIST'}">
