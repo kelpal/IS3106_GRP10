@@ -32,7 +32,7 @@ public class CategoryEntity implements Serializable {
     @Column(nullable = false, unique = true, length = 32)
     @NotNull
     @Size(max = 32)
-    private String categoryName;
+    private String name;
     @Column(nullable = false, length = 128)
     @NotNull
     @Size(max = 128)
@@ -58,7 +58,7 @@ public class CategoryEntity implements Serializable {
     {
         this();
         
-        this.categoryName = categoryName;
+        this.name = categoryName;
         this.description = description;
     }
     
@@ -96,17 +96,17 @@ public class CategoryEntity implements Serializable {
         return "entity.CategoryEntity[ id=" + categoryId + " ]";
     }
         /**
-     * @return the categoryName
+     * @return the name
      */
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param categoryName the categoryName to set
+     * @param name the name to set
      */
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
