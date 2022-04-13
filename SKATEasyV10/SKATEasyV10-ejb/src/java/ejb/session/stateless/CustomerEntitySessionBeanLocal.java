@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.CustomerEntity;
+import java.util.List;
 import javax.ejb.Local;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerUsernameExistException;
@@ -26,6 +27,9 @@ public interface CustomerEntitySessionBeanLocal {
 
     public CustomerEntity retrieveCustomerByUsername(String username) throws CustomerNotFoundException;
 
+
     public CustomerEntity retrieveCustomerById(Long employeeId) throws CustomerNotFoundException;
+
+    public List<CustomerEntity> retrieveAllCustomers();
     
 }
