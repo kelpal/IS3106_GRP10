@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/defaultTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h3 >View My Profile</h3>
+        
+        <p:messages id="messagesMain" />
+        
+        <div style="justify-content: center; display: flex" >
+        <p:graphicImage library="images" name="anonymousAvatar.jpg" height="120" width="120" alt="profile picture"/>
+        
+        </div>
+        <br/>
+        <div style="justify-content: center; display: flex;" >
+            
+            
+            
+            <br/>
+            <h:form id="formMain" >
+                <p:panelGrid style="align-self: center">
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Username: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyProfileManagedBean.currentStaffEntity.username}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="First Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyProfileManagedBean.currentStaffEntity.firstName}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Last Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyProfileManagedBean.currentStaffEntity.lastName}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Access Right: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyProfileManagedBean.currentStaffEntity.accessRightEnum}" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3" style="justify-content: center">
+                            <p:commandButton update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" value="&nbsp;Update Profile   &nbsp;" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Change Password" update="formChangePassword" oncomplete="PF('dialogChangePassword').show()"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+            
+            <br />
+            
+            <h:form id="formUpdateProfile">
+
+                <p:dialog id="dialogUpdateProfile" widgetVar="dialogUpdateProfile" header="Update Profile" closable="true">
+
+                    <p:messages id="messagesUpdateProfile" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="firstName" value="First Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:inputText id="firstName" value="#{viewMyProfileManagedBean.staffEntityToUpdate.firstName}" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="firstName" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="lastName" value="Last Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:inputText id="lastName" value="#{viewMyProfileManagedBean.staffEntityToUpdate.lastName}" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="lastName" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="username" value="Username: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="username" value="#{viewMyProfileManagedBean.staffEntityToUpdate.username}"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="username" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value=" Update Profile" update="@form formMain" actionListener="#{viewMyProfileManagedBean.updateProfile}" oncomplete="PF('dialogUpdateProfile').show()" />
+                            </p:column>
+                        </p:row>
+                        
+                        
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            
+            <h:form id="formChangePassword">
+
+                <p:dialog id="dialogChangePassword" widgetVar="dialogChangePassword" header="Change Password" closable="true">
+
+                    <p:messages id="messagesChangePassword" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="currentPassword" value="Current Password: " />
+                            </p:column>
+                            <p:column>
+                                <p:password id="currentPassword" value="#{viewMyProfileManagedBean.currentPassword}" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="currentPassword" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="newPassword" value="New Password: " />
+                            </p:column>
+                            <p:column>
+                                <p:password id="newPassword" value="#{viewMyProfileManagedBean.newPassword}">
+                                    <f:validateLength minimum="4" maximum="32" />
+                                </p:password>
+                            </p:column>
+                            <p:column>
+                                <p:message for="newPassword" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Change Password" update="@form formMain" actionListener="#{viewMyProfileManagedBean.doChangePassword}" oncomplete="PF('dialogChangePassword').show();" />
+                            </p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -222,7 +222,11 @@ public class StaffEntitySessionBean implements StaffEntitySessionBeanLocal {
         }
     }
     
-    
+    @Override
+    public void updateProfile(StaffEntity staffEntity)
+    {
+        entityManager.merge(staffEntity);
+    }
     
     // Added in v4.2
     

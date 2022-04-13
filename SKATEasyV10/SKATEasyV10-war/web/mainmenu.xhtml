@@ -6,6 +6,7 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <section id="mainmenu" class="mainmenu">
+        
         <h3>Main Menu</h3>
         <nav>
             <h:form>
@@ -13,17 +14,19 @@
                 <p:menu style="width:200px;">
 
                     <p:menuitem value="Home" outcome="/index" icon="pi pi-home" />
-
-                    <p:submenu label="Products"  rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="View All Products" icon="pi pi-briefcase" outcome="/products/viewAllProducts.xhtml"/>
-                        <p:menuitem value="Create New Product" icon="pi pi-plus" outcome="/products/createNewProduct.xhtml"/>
+                    <p:menuitem value="View My Profile" outcome="/viewMyProfile.xhtml" icon="pi pi-home" rendered="#{sessionScope.isLogin == true}"/>
+                    
+                    
+                    <p:submenu label="System Administation"  rendered="#{sessionScope.accessRight == 'ADMINISTRATOR'}">
+                        <p:menuitem value="Staff Management" outcome="/staff/staffManagement.xhtml" icon="pi pi-home" />
+                        
                     </p:submenu>
                     
-                    <p:submenu label="Orders"  rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="View All SaleTransaction" icon="pi pi-table" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
+                    <p:submenu label="Operations"  rendered="#{sessionScope.accessRight == 'STAFF' || sessionScope.accessRight == 'ADMINISTRATOR'}">
+                        <p:menuitem value="View All Sale Transaction" icon="pi pi-table" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
                     </p:submenu>  
                     
-                    <p:submenu label="Artist"  rendered="#{sessionScope.isLogin == true}">
+                    <p:submenu label="Artist"  rendered="#{sessionScope.accessRight == 'ARTIST'}">
                         <p:menuitem value="View My Requests" icon="pi pi-table" outcome="/artist/viewMyRequests.xhtml"/>
                     </p:submenu>  
 

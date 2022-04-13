@@ -4,47 +4,157 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./../template/defaultTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
         <div>
-            <h3>View All Sale Transactions</h3>
+            <h3>View My Customisation Requests</h3>
+            
+            <p:messages id="messagesMain"/>
             
             <h:form id='formMain'>
                 <br/>
                 
-                <p:dataTable id='dataTableMain' widgetVar='dataTableMain' value='#{viewMyRequestsManagedBean.customisationRequests}' var="request" rowKey="#{request.customisationRequestId}"
+                <p:dataTable id='dataTableMain' widgetVar='dataTableMain' value='#{viewMyRequestsManagedBean.customisationRequests}' var="cusRequest" rowKey="#{cusRequest.customisationRequestId}"
                              rowIndexVar="row" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
                 
                     <p:messages />
                     
-                    <p:column headerText="Customer ID" sortBy="#{request.customerEntiity}">
-                        <h:outputText value="#{request.customerEntiity}" />
+                    <p:column headerText="Customer ID" sortBy="#{cusRequest.customerEntity.customerId}">
+                        <h:outputText value="#{cusRequest.customerEntity.customerId}" />
                     </p:column>
                     
-                    <p:column headerText="Customer Name" sortBy="#{request.customerEntiity.firstName}">
-                        <h:outputText value="#{request.customerEntiity.firstName}" />
+                    <p:column headerText="Customer Name" sortBy="#{cusRequest.customerEntity.name}">
+                        <h:outputText value="#{cusRequest.customerEntity.name}" />
                     </p:column>
                     
-                    <p:column headerText="Request Date" sortBy="#{request.requestDate}">
-                        <h:outputText value="#{request.requestDate}" />
+                    <p:column headerText="Request Date" sortBy="#{cusRequest.requestDate}">
+                        <h:outputText value="#{cusRequest.requestDate}" />
                     </p:column>
                     
-                    <p:column headerText="Status" sortBy="#{request.status}">
-                        <h:outputText value="#{request.status}" />
+                    <p:column headerText="Completion Date" sortBy="#{cusRequest.completionDate}">
+                        <h:outputText value="#{cusRequest.completionDate}" />
                     </p:column>
                     
-                    <p:column headerText="Rejection Reason" sortBy="#{request.rejectionReason}">
-                        <h:outputText value="#{request.rejectionReason}" />
+                    <p:column headerText="Status" sortBy="#{cusRequest.status}">
+                        <h:outputText value="#{cusRequest.status}" />
+                    </p:column>
+                    
+                    <p:column headerText="Rejection Reason" sortBy="#{cusRequest.rejectionReason}">
+                        <h:outputText value="#{cusRequest.rejectionReason}" />
                     </p:column>
                     
                     <p:column headerText="Action" >
-                        
+                        <p:commandButton actionListener="#{viewMyRequestsManagedBean.doViewProduct}" update="formViewRequest" oncomplete="PF('dialogViewRequest').show()" icon="ui-icon-document" title="View Details">
+                            <f:attribute name="requestToView" value="#{cusRequest}" />
+                        </p:commandButton>
                         
                     </p:column>
                 
                 </p:dataTable>
                 
+            </h:form>
+            
+            <h:form id="formViewRequest">
+
+                <p:dialog id="dialogViewRequest" widgetVar="dialogViewRequest" header="View Customisation Request">
+
+                    <p:messages id="messagesViewRequest" redisplay="false" />
+
+                    <p:panelGrid>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Customer ID: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyRequestsManagedBean.customisationRequestToView.customerEntity.customerId}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Customer Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyRequestsManagedBean.customisationRequestToView.customerEntity.name}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Request Date" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyRequestsManagedBean.customisationRequestToView.requestDate}" />
+                        </p:column>
+                    </p:row>
+                        
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Completion Date" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyRequestsManagedBean.customisationRequestToView.completionDate}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Description: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyRequestsManagedBean.customisationRequestToView.description}" />
+                        </p:column>
+                    </p:row>
+                        
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Status: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyRequestsManagedBean.customisationRequestToView.status}" />
+                        </p:column>
+                    </p:row>
+                        
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Rejection Reason: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyRequestsManagedBean.customisationRequestToView.rejectionReason}" />
+                        </p:column>
+                    </p:row>
+                        
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton update="formMain @form" value="Accept" actionListener="#{viewMyRequestsManagedBean.acceptRequest}" rendered="#{viewMyRequestsManagedBean.customisationRequestToView.status == 'PENDING'}" oncomplete="PF('dialogViewRequest').show()"/>&nbsp;
+                            <p:commandButton update="@form" value="Reject" actionListener="#{viewMyRequestsManagedBean.openRejectionReason}" rendered="#{viewMyRequestsManagedBean.customisationRequestToView.status == 'PENDING'}" oncomplete="PF('dialogViewRequest').show()"/>&nbsp;
+
+                            <p:commandButton update="formMain @form" value="Complete" actionListener="#{viewMyRequestsManagedBean.completeRequest}" rendered="#{viewMyRequestsManagedBean.customisationRequestToView.status == 'ACCEPTED'}" oncomplete="PF('dialogViewRequest').show()"/>&nbsp;
+                            
+                        </p:column>
+                    </p:row>
+                        
+                    <p:row id="rejectReasonRow" rendered="#{viewMyRequestsManagedBean.moveOn == true}">
+                        <p:column>
+                            <p:outputLabel for="rejectReason" value="Rejection reason: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="rejectReason" value="#{viewMyRequestsManagedBean.customisationRequestToView.rejectionReason}" required="true" requiredMessage="Rejection reason is required" />
+                        </p:column>
+                    </p:row>
+                        
+                    <p:row rendered="#{viewMyRequestsManagedBean.moveOn == true}">
+                        <p:column colspan="3">
+                            <p:commandButton update="@form formMain" value="Confirm Rejection" actionListener="#{viewMyRequestsManagedBean.rejectRequest}" oncomplete="PF('dialogViewRequest').show()"/>&nbsp;     
+                        </p:column>
+                    </p:row>
+                    </p:panelGrid>
+
+                </p:dialog>
+
             </h:form>
         </div>
     </ui:define>
