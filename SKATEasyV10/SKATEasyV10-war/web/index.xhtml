@@ -43,6 +43,12 @@
             </h:form>
         </h:panelGroup>
         
+        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
+            <h:form>
+                <p:graphicImage library="images" name="logo.png" width="100%" alt="banner"/>
+            </h:form>
+        </h:panelGroup>
+        
     </ui:define>
 
 </ui:composition>

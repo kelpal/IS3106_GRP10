@@ -8,6 +8,7 @@ package jsf.managedbean;
 import ejb.session.stateless.SaleTransactionEntitySessionBeanLocal;
 import entity.CustomerEntity;
 import entity.SaleTransactionEntity;
+import entity.SaleTransactionLineItemEntity;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
@@ -35,6 +36,8 @@ public class ViewAllSaleTransactionsManagedBean implements Serializable {
     private List<SaleTransactionEntity> saleTransactions;
     
     private SaleTransactionEntity saleTransactionToView;
+    
+    private List<SaleTransactionLineItemEntity> stlis;
 
     /**
      * Creates a new instance of ViewAllSaleTransactionsManagedBean
@@ -57,7 +60,9 @@ public class ViewAllSaleTransactionsManagedBean implements Serializable {
     
     public void viewSaleTransaction(ActionEvent event)
     {
-        saleTransactionToView = (SaleTransactionEntity)event.getComponent().getAttributes().get("saleTransactionToView");
+        this.saleTransactionToView = (SaleTransactionEntity)event.getComponent().getAttributes().get("saleTransactionToView");
+        System.out.println(saleTransactionToView.getSaleTransactionLineItemEntities());
+        this.stlis = saleTransactionToView.getSaleTransactionLineItemEntities();
     }
     
     public void doRefund(ActionEvent event)
@@ -66,8 +71,6 @@ public class ViewAllSaleTransactionsManagedBean implements Serializable {
         {
             SaleTransactionEntity toRefund = (SaleTransactionEntity)event.getComponent().getAttributes().get("saleTransactionToRefund");
             saleTransactionEntitySessionBeanLocal.voidRefundSaleTransaction(toRefund.getSaleTransactionId());
-            
-            getSaleTransactions();
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Refund Successful!", null));
         } catch(SaleTransactionAlreadyVoidedRefundedException | SaleTransactionNotFoundException  ex)
@@ -95,6 +98,20 @@ public class ViewAllSaleTransactionsManagedBean implements Serializable {
      */
     public void setSaleTransactionToView(SaleTransactionEntity saleTransactionToView) {
         this.saleTransactionToView = saleTransactionToView;
+    }
+
+    /**
+     * @return the stlis
+     */
+    public List<SaleTransactionLineItemEntity> getStlis() {
+        return stlis;
+    }
+
+    /**
+     * @param stlis the stlis to set
+     */
+    public void setStlis(List<SaleTransactionLineItemEntity> stlis) {
+        this.stlis = stlis;
     }
     
 }

@@ -25,4 +25,6 @@ public interface ArtistEntitySessionBeanLocal {
     public ArtistEntity retrieveArtistByUsername(String username) throws ArtistNotFoundException;
 
     public ArtistEntity retrieveArtistById(Long artistId) throws ArtistNotFoundException;
+
+    public void updateArtist(ArtistEntity artist);
 }

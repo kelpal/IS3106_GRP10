@@ -13,11 +13,12 @@
             
             <h:form id='formMain'>
                 <br/>
+                <p:messages id="messagesMain"/>
                 
                 <p:dataTable id='dataTableMain' widgetVar='dataTableMain' value='#{viewAllSaleTransactionsManagedBean.saleTransactions}' var="saleTransaction" rowKey="#{salesTransaction.saleTransactionId}"
                              rowIndexVar="row" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
                 
-                    <p:messages />
+
                     
                     <p:column headerText="Transaction ID" sortBy="#{saleTransaction.saleTransactionId}">
                         <h:outputText value="#{saleTransaction.saleTransactionId}" />
@@ -44,11 +45,11 @@
                     </p:column>
                     
                     <p:column headerText="Action" >
-                        <p:commandButton oncomplete="PF('dialogViewLineEntities').show()" icon="ui-icon-document" title="View" actionListener="#{viewAllSaleTransactionsManagedBean.viewSaleTransaction}">
+                        <p:commandButton actionListener="#{viewAllSaleTransactionsManagedBean.viewSaleTransaction}" update="formViewLineEntities" oncomplete="PF('dialogViewLineEntities').show()" icon="ui-icon-document" title="View">
                             <f:attribute value="#{saleTransaction}" name="saleTransactionToView" />
                         </p:commandButton>
-                        <p:commandButton value='Refund' actionListener='#{viewAllSaleTransactionsManagedBean.doRefund}' update='@form formMain:dataTableMain'>
-                            <f:attribute name="saleTransactionToRefund" value='#{salesTransaction}'/>
+                        <p:commandButton value='Refund' actionListener='#{viewAllSaleTransactionsManagedBean.doRefund}' update='formMain:dataTableMain formMain:messagesMain' rendered="#{saleTransaction.voidRefund == false}">
+                            <f:attribute name="saleTransactionToRefund" value='#{saleTransaction}'/>
                             <p:confirm header="Confirmation" message="Are you sure you want to refund #{saleTransaction.saleTransactionId}?" icon="ui-icon-alert" />
                         </p:commandButton>
                         
@@ -56,10 +57,6 @@
                             <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog>
-                        
-                        <p:growl>
-                            <p:autoUpdate/>
-                        </p:growl>
                         
                     </p:column>
                 
@@ -70,18 +67,22 @@
         
         <div>
             <h:form id="formViewLineEntities">
-                <p:dialog id="dialogViewLineEntities" widgetVar="dialogViewLineEntities" header="View Items" closable="true">
-                    <p:dataTable id='dataTableMain' widgetVar='dataTableMain' value='#{viewAllSaleTransactionsManagedBean.saleTransactionToView.saleTransactionLineItemEntities}' var="stli" rowKey="#{stli.serialNumber}"
+                <p:dialog id="dialogViewLineEntities" widgetVar="dialogViewLineEntities" header="View Items" closable="true" width="600px">
+                    <p:dataTable id='dataTableViewLineEntities' widgetVar='dataTableViewLineEntities' value='#{viewAllSaleTransactionsManagedBean.stlis}' var="stli" rowKey="#{stli.saleTransactionLineItemId}"
                              rowIndexVar="row" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
                 
                     <p:messages />
+                    
+                    <p:column headerText="Line Item ID" sortBy="#{stli.saleTransactionLineItemId}">
+                        <h:outputText value="#{stli.saleTransactionLineItemId}" />
+                    </p:column>
                     
                     <p:column headerText="Serial Number" sortBy="#{stli.serialNumber}">
                         <h:outputText value="#{stli.serialNumber}" />
                     </p:column>
                     
                     <p:column headerText="Name of Product" sortBy="#{stli.productEntity.productName}">
-                        <h:outputText value="#{stli.productEntity.productName}" />
+                        <h:outputText value="#{stli.productEntity.name}" />
                     </p:column>
                     
                     <p:column headerText="Unit Price" sortBy="#{stli.unitPrice}">

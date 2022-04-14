@@ -191,7 +191,7 @@ public class CategoryEntitySessionBean implements CategoryEntitySessionBeanLocal
                 CategoryEntity categoryEntityToUpdate = retrieveCategoryByCategoryId(categoryEntity.getCategoryId());
                 
                 Query query = em.createQuery("SELECT c FROM CategoryEntity c WHERE c.name = :inName AND c.categoryId <> :inCategoryId");
-                query.setParameter("inName", categoryEntity.getCategoryName());
+                query.setParameter("inName", categoryEntity.getName());
                 query.setParameter("inCategoryId", categoryEntity.getCategoryId());
                 
                 if(!query.getResultList().isEmpty())
@@ -199,7 +199,7 @@ public class CategoryEntitySessionBean implements CategoryEntitySessionBeanLocal
                     throw new UpdateCategoryException("The name of the category to be updated is duplicated");
                 }
                 
-                categoryEntityToUpdate.setCategoryName(categoryEntity.getCategoryName());
+                categoryEntityToUpdate.setName(categoryEntity.getName());
                 categoryEntityToUpdate.setDescription(categoryEntity.getDescription());                               
                 
                 if(parentCategoryId != null)

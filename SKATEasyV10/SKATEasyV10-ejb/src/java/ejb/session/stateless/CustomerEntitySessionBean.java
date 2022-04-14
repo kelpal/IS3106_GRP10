@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.ArtistEntity;
 import entity.CustomerEntity;
 import java.util.List;
 import java.util.Set;
@@ -145,6 +146,14 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
             throw new CustomerNotFoundException("Customer ID " + employeeId + " does not exist");
         }
     }
+    
+    @Override
+    public void updateCustomer(CustomerEntity customer)
+    {
+        em.merge(customer);
+    }
+    
+
     
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<CustomerEntity>> constraintViolations)

@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import util.enumeration.AccessRightEnum;
 
 @WebFilter(filterName = "SecurityFilter", urlPatterns = {"/*"})
 
@@ -25,26 +26,46 @@ public class SecurityFilter implements Filter {
         this.filterConfig = filterConfig;
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
+    {
+        HttpServletRequest httpServletRequest = (HttpServletRequest)request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse)response;
         HttpSession httpSession = httpServletRequest.getSession(true);
-        String requestServletPath = httpServletRequest.getServletPath();
+        String requestServletPath = httpServletRequest.getServletPath();        
+        
+        
 
-        if (httpSession.getAttribute("isLogin") == null) {
+        if(httpSession.getAttribute("isLogin") == null)
+        {
             httpSession.setAttribute("isLogin", false);
         }
 
-        Boolean isLogin = (Boolean) httpSession.getAttribute("isLogin");
-
-        if (!excludeLoginCheck(requestServletPath)) {
-            if (isLogin == true) {
-                StaffEntity currentStaff = (StaffEntity) httpSession.getAttribute("currentStaff");
-                chain.doFilter(request, response);
-            } else {
+        Boolean isLogin = (Boolean)httpSession.getAttribute("isLogin");
+        
+        
+        
+        if(!excludeLoginCheck(requestServletPath))
+        {
+            if(isLogin == true)
+            {
+                StaffEntity currentStaffEntity = (StaffEntity)httpSession.getAttribute("currentStaff");
+                
+                if(checkAccessRight(requestServletPath, currentStaffEntity.getAccessRightEnum()))
+                {
+                    chain.doFilter(request, response);
+                }
+                else
+                {
+                    httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
+                }
+            }
+            else
+            {
                 httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
             }
-        } else {
+        }
+        else
+        {
             chain.doFilter(request, response);
         }
     }
@@ -52,13 +73,61 @@ public class SecurityFilter implements Filter {
     public void destroy() {
 
     }
+    
+    private Boolean checkAccessRight(String path, AccessRightEnum accessRight)
+    {        
+        if(accessRight.equals(AccessRightEnum.STAFF))
+        {            
+            if(path.equals("/saleTransactions/viewAllSaleTransactions.xhtml") ||
+                path.equals("/customers/viewAllCustomers.xhtml") ||
+                path.equals("/tagsCategories/tagAndCategoryManagement.xhtml") ||
+                path.equals("/products/productManagement.xhtml") ||
+                path.equals("/viewMyProfile.xhtml"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if(accessRight.equals(AccessRightEnum.ADMINISTRATOR))
+        {
+            if(path.equals("/staff/staffManagement.xhtml") ||
+                path.equals("/saleTransactions/viewAllSaleTransactions.xhtml") ||
+                path.equals("/customers/viewAllCustomers.xhtml") ||
+                path.equals("/tagsCategories/tagAndCategoryManagement.xhtml") ||
+                path.equals("/products/productManagement.xhtml") ||
+                path.equals("/viewMyProfile.xhtml"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if(accessRight.equals(AccessRightEnum.ARTIST))
+        {
+            if(path.equals("/artist/viewMyRequests.xhtml") ||
+                path.equals("/viewMyProfile.xhtml"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        return false;
+    }
 
     private Boolean excludeLoginCheck(String path) {
         if (path.equals("/index.xhtml")
                 || path.equals("/accessRightError.xhtml")
-                || path.startsWith("/javax.faces.resource")
-                || path.equals("/saleTransactions/viewAllSaleTransactions.xhtml")) {
-
+                || path.startsWith("/javax.faces.resource")) 
+        {
             return true;
         } else {
             return false;

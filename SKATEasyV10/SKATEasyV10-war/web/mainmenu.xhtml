@@ -14,17 +14,20 @@
                 <p:menu style="width:200px;">
 
                     <p:menuitem value="Home" outcome="/index" icon="pi pi-home" />
-                    <p:menuitem value="View My Profile" outcome="/viewMyProfile.xhtml" icon="pi pi-home" rendered="#{sessionScope.isLogin == true}"/>
+                    <p:menuitem value="View My Profile" outcome="/viewMyProfile.xhtml" icon="pi pi-id-card" rendered="#{sessionScope.isLogin == true}"/>
                     
                     
                     <p:submenu label="System Administation"  rendered="#{sessionScope.accessRight == 'ADMINISTRATOR'}">
-                        <p:menuitem value="Staff Management" outcome="/staff/staffManagement.xhtml" icon="pi pi-home" />
+                        <p:menuitem value="Staff Management" outcome="/staff/staffManagement.xhtml" icon="pi pi-user-edit" />
                         
                     </p:submenu>
                     
                     <p:submenu label="Operations"  rendered="#{sessionScope.accessRight == 'STAFF' || sessionScope.accessRight == 'ADMINISTRATOR'}">
-                        <p:menuitem value="View All Sale Transaction" icon="pi pi-table" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
-                        <p:menuitem value="View All Customers" icon="pi pi-table" outcome="/customers/viewAllCustomers.xhtml"/>
+                        <p:menuitem value="View All Sale Transaction" icon="pi pi-dollar" outcome="/saleTransactions/viewAllSaleTransactions.xhtml"/>
+                        <p:menuitem value="View All Customers" icon="pi pi-users" outcome="/customers/viewAllCustomers.xhtml"/>
+                        <p:menuitem value="Tag/Category Management" icon="pi pi-tags" outcome="/tagsCategories/tagAndCategoryManagement.xhtml"/>
+                        <p:menuitem value="Product Management" icon="pi pi-clone" outcome="/products/productManagement.xhtml"/>
+                 
                     </p:submenu>  
                     
                     <p:submenu label="Artist"  rendered="#{sessionScope.accessRight == 'ARTIST'}">

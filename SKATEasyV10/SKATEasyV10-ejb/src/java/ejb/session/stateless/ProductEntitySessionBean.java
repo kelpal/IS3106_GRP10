@@ -380,7 +380,7 @@ public class ProductEntitySessionBean implements ProductEntitySessionBeanLocal {
                         }
                     }
                     
-                    productEntityToUpdate.setProductName(productEntity.getProductName());
+                    productEntityToUpdate.setName(productEntity.getName());
                     productEntityToUpdate.setDescription(productEntity.getDescription());
                     productEntityToUpdate.setQuantityOnHand(productEntity.getQuantityOnHand());
                     productEntityToUpdate.setReorderQuantity(productEntity.getReorderQuantity());

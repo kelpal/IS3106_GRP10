@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +46,7 @@ public class ProductEntity implements Serializable {
     @Column(nullable = false, length = 64)
     @NotNull
     @Size(max = 64)
-    private String productName;
+    private String name;
     @Column(length = 128)
     @Size(max = 128)
     private String description;
@@ -83,16 +84,17 @@ public class ProductEntity implements Serializable {
 
     
     public ProductEntity() {
+        this.tagEntities = new ArrayList<>();
     }
 
     public ProductEntity(String productName) {
         this(); //good practice to retain convention even if default constructor is empty
-        this.productName = productName;
+        this.name = productName;
     }
 
     public ProductEntity(String skuCode, String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating) {
         this.skuCode = skuCode;
-        this.productName = productName;
+        this.name = productName;
         this.description = description;
         this.quantityOnHand = quantityOnHand;
         this.reorderQuantity = reorderQuantity;
@@ -173,15 +175,15 @@ public class ProductEntity implements Serializable {
     /**
      * @return the productName
      */
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param productName the productName to set
+     * @param name the productName to set
      */
-    public void setProductName(String productName) {
-        this.setProductName(productName);
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

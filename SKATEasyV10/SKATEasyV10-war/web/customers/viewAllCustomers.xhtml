@@ -34,9 +34,32 @@
                     <p:column headerText="Name" sortBy="#{customer.name}" style="text-align: center">
                         <h:outputText value="#{customer.name}" />
                     </p:column>
+                    
+                    <p:column headerText="Disabled?" sortBy="#{customer.isDisabled}" style="text-align: center">
+                        <h:outputText value="#{customer.isDisabled}" />
+                    </p:column>
+                    
+                    <p:column headerText="Action" >
+                        <p:commandButton icon="pi pi-envelope" actionListener="#{viewAllCustomersManagedBean.sendRecoveryEmail}" title="Send Recovery Email">
+                            <p:confirm header="Confirmation" message="Do you want to send a recovery password to #{customer.email}?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:commandButton icon="pi pi-ban" update="formAllCustomers:dataTableAllCustomers" actionListener="#{viewAllCustomersManagedBean.disableCustomer}" title="Disable account" rendered="#{customer.isDisabled == false}">
+                            <f:attribute name="customerToDisable" value="#{customer}" />
+                            <p:confirm header="Confirmation" message="Do you want to disable customer with ID #{customer.customerId}, #{customer.name}?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:commandButton icon="pi pi-check-circle" update="formAllCustomers:dataTableAllCustomers" actionListener="#{viewAllCustomersManagedBean.enableCustomer}" title="Enable account" rendered="#{customer.isDisabled == true}">
+                            <f:attribute name="customerToEnable" value="#{customer}" />
+                            <p:confirm header="Confirmation" message="Do you want to enable customer with ID #{customer.customerId}, #{customer.name}?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
 
 
                 </p:dataTable>
+                
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
             </h:form>
         </div>
 

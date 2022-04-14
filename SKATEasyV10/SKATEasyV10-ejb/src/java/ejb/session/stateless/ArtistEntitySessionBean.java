@@ -115,6 +115,12 @@ public class ArtistEntitySessionBean implements ArtistEntitySessionBeanLocal {
         }
     }
     
+    @Override
+    public void updateArtist(ArtistEntity artist)
+    {
+        em.merge(artist);
+    }
+    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ArtistEntity>> constraintViolations)
     {
         String msg = "Input data validation error!:";
