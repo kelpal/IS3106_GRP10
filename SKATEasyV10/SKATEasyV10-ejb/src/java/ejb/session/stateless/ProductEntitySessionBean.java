@@ -98,6 +98,8 @@ public class ProductEntitySessionBean implements ProductEntitySessionBeanLocal {
                 entityManager.persist(newProductEntity);
                 newProductEntity.setCategoryEntity(categoryEntity);
                 
+                categoryEntity.getProductEntities().add(newProductEntity);
+                
                 if(tagIds != null && (!tagIds.isEmpty()))
                 {
                     for(Long tagId:tagIds)

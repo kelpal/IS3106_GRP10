@@ -132,10 +132,10 @@ public class TagAndCategoryManagementManagedBean implements Serializable {
         try
         {
             CategoryEntity categoryToDelete = (CategoryEntity)event.getComponent().getAttributes().get("categoryToDelete");
-            categories.remove(categoryToDelete);
+
             
             categoryEntitySessionBeanLocal.deleteCategory(categoryToDelete.getCategoryId());
-            
+            categories.remove(categoryToDelete);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Category has been deleted!", null));
 
         } catch (CategoryNotFoundException | DeleteCategoryException ex)
