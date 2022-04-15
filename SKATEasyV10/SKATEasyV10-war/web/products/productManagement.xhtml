@@ -143,7 +143,7 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
+                                <p:outputLabel for="description" value="Description: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
                                 <p:inputText id="description" value="#{productManagementManagedBean.newProductEntity.description}" placeholder="Product 1" required="true" requiredMessage="Description is required" />
@@ -155,7 +155,19 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand " style="font-weight: bold;" />
+                                <p:outputLabel for="imageLink" value="Image Link: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="imageLink" value="#{productManagementManagedBean.newProductEntity.imageLink}" placeholder="Product 1" required="true" requiredMessage="Image Link is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="imageLink" />
+                            </p:column>
+                        </p:row>                        
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
                                 <p:spinner id="quantityOnHand" value="#{productManagementManagedBean.newProductEntity.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
@@ -289,6 +301,15 @@
                     
                     <p:row>
                         <p:column>
+                            <h:outputLabel value="Image Link: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagementManagedBean.productEntityToView.imageLink}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
                             <h:outputLabel value="Quantity On Hand: " />
                         </p:column>
                         <p:column>
@@ -396,7 +417,7 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="description" value="Description " />
+                                <p:outputLabel for="description" value="Description: " />
                             </p:column>
                             <p:column>
                                 <p:inputText id="description" value="#{productManagementManagedBean.productEntityToUpdate.description}" placeholder="Product 1" required="true" requiredMessage="Description is required" />
@@ -405,10 +426,22 @@
                                 <p:message for="description" />
                             </p:column>
                         </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="imageLink" value="Image Link: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="imageLink" value="#{productManagementManagedBean.productEntityToView.imageLink}" placeholder="Product 1" required="true" requiredMessage="Image Link is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="imageLink" />
+                            </p:column>                            
+                        </p:row>
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand " />
+                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand: " />
                             </p:column>
                             <p:column>
                                 <p:spinner id="quantityOnHand" value="#{productManagementManagedBean.productEntityToUpdate.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />

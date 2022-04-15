@@ -116,45 +116,138 @@ public class DataInitSessionBean {
     {
         try
         {
-            StaffEntity admin = staffEntitySessionBeanLocal.createNewStaff(new StaffEntity("Admin", "One", AccessRightEnum.ADMINISTRATOR, "admin1", "password"));
-            StaffEntity staff = staffEntitySessionBeanLocal.createNewStaff(new StaffEntity("Staff", "One", AccessRightEnum.STAFF, "staff1", "password"));
+            //Admin and Staff
+            StaffEntity admin1 = staffEntitySessionBeanLocal.createNewStaff(new StaffEntity("Admin", "One", AccessRightEnum.ADMINISTRATOR, "admin1", "password"));
+            StaffEntity staff1 = staffEntitySessionBeanLocal.createNewStaff(new StaffEntity("Staff", "One", AccessRightEnum.STAFF, "staff1", "password"));
+            StaffEntity staff2 = staffEntitySessionBeanLocal.createNewStaff(new StaffEntity("Staff", "Two", AccessRightEnum.STAFF, "staff2", "password"));
+            StaffEntity staff3 = staffEntitySessionBeanLocal.createNewStaff(new StaffEntity("Staff", "Three", AccessRightEnum.STAFF, "staff3", "password"));
             
-            CategoryEntity catA = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Category A", "Category A"), null);
-            CategoryEntity catB = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Category B", "Category B"), null);
+            //Customers
+            CustomerEntity customer1 = customerEntitySessionBeanLocal.createNewCustomer(new CustomerEntity("Customer 1", "customer1@email.com", "customer1", "password"));
+            
+            //Artists
+            ArtistEntity artist1 = artistEntitySessionBeanLocal.createNewArtist(new ArtistEntity("Leonardo", "da Vinci", AccessRightEnum.ARTIST, "artist1", "password"));
+            ArtistEntity artist2 = artistEntitySessionBeanLocal.createNewArtist(new ArtistEntity("Claude", "Monet", AccessRightEnum.ARTIST, "artist2", "password"));
+            ArtistEntity artist3 = artistEntitySessionBeanLocal.createNewArtist(new ArtistEntity("Frida", "Kahlo", AccessRightEnum.ARTIST, "artist3", "password"));
 
-            TagEntity tagA = tagEntitySessionBeanLocal.createNewTagEntity(new TagEntity("Tag A"));
-            TagEntity tagB = tagEntitySessionBeanLocal.createNewTagEntity(new TagEntity("Tag B"));  
+            //Customisation Requests
+            customisationRequestSessionBeanLocal.createCustomisationRequest(new CustomisationRequest("First Request", new Date(), StatusEnum.PENDING), artist1.getStaffId(), customer1.getCustomerId());
             
+            //Categories
+            CategoryEntity catSkateboard = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Skateboard", "Skateboard"), null);
+            CategoryEntity catCompleteSkateboard = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Complete Skateboard", "Complete Skateboard"), catSkateboard.getCategoryId());
+            CategoryEntity catSkateboardDeck = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Skateboard Deck", "Skateboard Deck"), catSkateboard.getCategoryId());
+            CategoryEntity catSkateboardBearings = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Skateboard Bearings", "Skateboard Bearings"), catSkateboard.getCategoryId());
+            CategoryEntity catSkateboardTrucks = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Skateboard Trucks", "Skateboard Trucks"), catSkateboard.getCategoryId());
+            CategoryEntity catSkateboardWheels = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Skateboard Wheels", "Skateboard Wheels"), catSkateboard.getCategoryId());
+            
+            CategoryEntity catLongboard = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Longboard", "Longboard"), null);
+            CategoryEntity catCompleteLongboard = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Complete Longboard", "Complete Longboard"), catLongboard.getCategoryId());
+            CategoryEntity catLongboardDeck = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Longboard Deck", "Longboard Deck"), catLongboard.getCategoryId());
+            CategoryEntity catLongboardBearings = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Longboard Bearings", "Longboard Bearings"), catLongboard.getCategoryId());
+            CategoryEntity catLongboardTrucks = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Longboard Trucks", "Longboard Trucks"), catLongboard.getCategoryId());
+            CategoryEntity catLongboardWheels = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Longboard Wheels", "Longboard Wheels"), catLongboard.getCategoryId());
+            
+            CategoryEntity catPennyBoard = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Penny Board", "Penny Board"), null);
+            CategoryEntity catCompletePennyBoard = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Complete Penny Board", "Complete Penny Board"), catPennyBoard.getCategoryId());
+            CategoryEntity catPennyBoardDeck = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Penny Board Deck", "Penny Board Deck"), catPennyBoard.getCategoryId());
+            CategoryEntity catPennyBoardBearings = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Penny Board Bearings", "Penny Board Bearings"), catPennyBoard.getCategoryId());
+            CategoryEntity catPennyBoardTrucks = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Penny Board Trucks", "Penny Board Trucks"), catPennyBoard.getCategoryId());
+            CategoryEntity catPennyBoardWheels = categoryEntitySessionBeanLocal.createNewCategoryEntity(new CategoryEntity("Penny Board Wheels", "Penny Board Wheels"), catPennyBoard.getCategoryId());
+            
+            //Tags
+            TagEntity tagNew = tagEntitySessionBeanLocal.createNewTagEntity(new TagEntity("New"));
+            TagEntity tagFeatured = tagEntitySessionBeanLocal.createNewTagEntity(new TagEntity("Featured"));  
+            TagEntity tagSale20 = tagEntitySessionBeanLocal.createNewTagEntity(new TagEntity("Sale - 20% Off"));  
+            TagEntity tagSale40 = tagEntitySessionBeanLocal.createNewTagEntity(new TagEntity("Sale - 40% Off"));  
             
             List<Long> tagIds = new ArrayList<>();
-            tagIds.add(tagA.getTagId());
-            tagIds.add(tagB.getTagId());
+            tagIds.add(tagNew.getTagId());
+            tagIds.add(tagFeatured.getTagId());
+            tagIds.add(tagSale20.getTagId());
+            tagIds.add(tagSale40.getTagId());
             System.out.println(tagIds);
             
-            ProductEntity productA = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000001","Product A", "Product A", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
-            ProductEntity productB = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000002","Product B", "Product B", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
-            productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000003","Product C", "Product C", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
-            productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000004","Product D", "Product D", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
-            productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000005","Product E", "Product E", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
+            //Complete Skateboards
+            ProductEntity productCS1 = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("CS00001","BD Skate Co. Memphis Yellow 7.75\" Skateboard Complete", 
+                    "Complete BD skateboard in yellow!", "https://cdn.shopify.com/s/files/1/0626/6876/7468/products/6447ac9c-b7b9-4668-9bbd-a4475a6d8fb9_500x.png?v=1645325256",
+                    10, 10, new BigDecimal(130.00),new BigDecimal(150.00), 5), catCompleteSkateboard.getCategoryId(),null);
+            ProductEntity productCS2 = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("CS00002","BD Skate Co. Graffiti White 8.0\" Skateboard Complete", 
+                    "Complete BD skateboard in white!", "https://cdn.shopify.com/s/files/1/0626/6876/7468/products/76b5377b-c327-4114-bea0-3192a2b30952_500x.png?v=1646894434",
+                    10, 10, new BigDecimal(130.00),new BigDecimal(150.00), 5), catCompleteSkateboard.getCategoryId(),null);
+            ProductEntity productCS3 = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("CS00003","BD Skate Co. Modern Cosmos Blue 8.0\" Skateboard Complete", 
+                    "Complete BD skateboard in blue!", "https://cdn.shopify.com/s/files/1/0626/6876/7468/products/bd_moderncosmos_blue_8_complete_skate_2021-819x1024_jpg_720x.png?v=1645498034",
+                    10, 10, new BigDecimal(130.00),new BigDecimal(150.00), 5), catCompleteSkateboard.getCategoryId(),null);
+            ProductEntity productCS4 = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("CS00004","Nomad Horizon Tiffany 7.75\" Skateboard Complete", 
+                    "Complete skateboard straight from Nomad.", "https://cdn.shopify.com/s/files/1/0626/6876/7468/products/2d8d6d78-493f-4008-a837-a88b3007a8e9_487x.png?v=1645499514",
+                    10, 10, new BigDecimal(150.00),new BigDecimal(150.00), 5), catCompleteSkateboard.getCategoryId(),null);
+            ProductEntity productCS5 = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("CS00005","Nomad Krid Kollektive Thunder 8.0\" Skateboard Complete", 
+                    "Complete skateboard straight from Nomad.", "https://cdn.shopify.com/s/files/1/0626/6876/7468/products/af03787f-2daa-42f9-a214-8e2e3515a41a_jpg_500x.png?v=1645499628",
+                    10, 10, new BigDecimal(150.00),new BigDecimal(150.00), 5), catCompleteSkateboard.getCategoryId(),null);
             
-            SaleTransactionLineItemEntity stli1 = new SaleTransactionLineItemEntity(1, productA, 1, new BigDecimal("10"), new BigDecimal("10"));
-            SaleTransactionLineItemEntity stli2 = new SaleTransactionLineItemEntity(1, productB, 1, new BigDecimal("20"), new BigDecimal("20"));
+            //Skateboard Decks
+            ProductEntity productSD1 = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("SD00001", "Sovrn Pluie 8.5\" Skateboard Deck",
+                    "Designed by Alexandre Souêtre.", "https://cdn.shopify.com/s/files/1/0626/6876/7468/products/7c1da073-1f88-4a05-9f3d-d3f8a300a1cc.jpg?v=1645341292",
+                    10, 10, new BigDecimal(110.00), new BigDecimal(110.00), 5), catSkateboardDeck.getCategoryId(), null);
+            ProductEntity productSD2 = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("SD00002", "Sovrn Dauphin 8.25\" Skateboard Deck",
+                    "Designed by Alexandre Souêtre.", "https://cdn.shopify.com/s/files/1/0626/6876/7468/products/e989ab24-3c43-4da5-9be8-7b2cd2bfdbbb_500x.jpg?v=1645341061",
+                    10, 10, new BigDecimal(110.00), new BigDecimal(110.00), 5), catSkateboardDeck.getCategoryId(), null);
+            ProductEntity productSD3 = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("SD00003", "Polar ROMAN GONZALEZ - Soldier 8.38\" Skateboard Deck",
+                    "Polar Skate.", "https://cdn.shopify.com/s/files/1/0626/6876/7468/products/afaa82b1-d249-428e-a1b2-2a3bbf64ee89_500x.jpg?v=1645337962",
+                    10, 10, new BigDecimal(100.00), new BigDecimal(100.00), 5), catSkateboardDeck.getCategoryId(), null);
             
-            List<SaleTransactionLineItemEntity> stlis = new ArrayList<>();
-            stlis.add(stli1);
-            stlis.add(stli2);
+            //Skateboard Bearings
             
-            SaleTransactionEntity st = new SaleTransactionEntity(3, 2, new BigDecimal("30"), new Date(), stlis, Boolean.FALSE);
+            //Skateboard Trucks
             
-            saleTransactionEntitySessionBeanLocal.createNewSaleTransaction(admin.getStaffId(), st);
+            //Skateboard Wheels
+            
+            
+            //Complete Longboards
+            
+            //Longboard Decks
+            
+            //Longboard Bearings
+            
+            //Longboard Trucks
+            
+            //Longboard Wheels
+            
+            
+            //Complete Penny Boards
+            
+            //Penny Board Decks
+            
+            //Penny Board Bearings
+            
+            //Penny Board Trucks
+            
+            //Penny Board Wheels
+           
+            
+            //Sale Transaction Entities
+            //ST1
+            SaleTransactionLineItemEntity stli11 = new SaleTransactionLineItemEntity(1, productCS1, 1, new BigDecimal("10"), new BigDecimal("10"));
+            SaleTransactionLineItemEntity stli12 = new SaleTransactionLineItemEntity(1, productCS2, 1, new BigDecimal("20"), new BigDecimal("20"));
+            
+            List<SaleTransactionLineItemEntity> stlis1 = new ArrayList<>();
+            stlis1.add(stli11);
+            stlis1.add(stli12);
+            
+            SaleTransactionEntity st1 = new SaleTransactionEntity(3, 2, new BigDecimal("30"), new Date(), stlis1, Boolean.FALSE);
+            saleTransactionEntitySessionBeanLocal.createNewSaleTransaction(admin1.getStaffId(), st1);
 
+            //ST2
             
-            ArtistEntity artist1 = artistEntitySessionBeanLocal.createNewArtist(new ArtistEntity("Artist", "1",AccessRightEnum.ARTIST, "artist1", "password"));
-
-            CustomerEntity customer1 = customerEntitySessionBeanLocal.createNewCustomer(new CustomerEntity("Customer 1", "customer1@email.com", "customer1", "password"));
-
-            customisationRequestSessionBeanLocal.createCustomisationRequest(new CustomisationRequest("First Request", new Date(), StatusEnum.PENDING), artist1.getStaffId(), customer1.getCustomerId());
-
+            
+            //ST3
+            
+            //ST4
+            
+            //ST5
+            
+            
+            
         } catch (CreateNewCategoryException | InputDataValidationException | ArtistUsernameExistException | CustomerUsernameExistException | StaffUsernameExistException | UnknownPersistenceException | CreateNewTagException | CreateNewProductException
                 | ProductSkuCodeExistException | CreateNewCustomisationRequestException | CreateNewSaleTransactionException ex) {
             ex.printStackTrace();

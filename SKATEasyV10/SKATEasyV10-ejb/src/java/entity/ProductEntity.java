@@ -45,11 +45,14 @@ public class ProductEntity implements Serializable {
     private String skuCode;
     @Column(nullable = false, length = 64)
     @NotNull
-    @Size(max = 64)
+    @Size(max = 80)
     private String name;
     @Column(length = 128)
     @Size(max = 128)
     private String description;
+    @Column(length = 200)
+    @Size (max = 200)
+    private String imageLink;
     @Column(nullable = false)
     @NotNull
     @Min(0)
@@ -92,16 +95,28 @@ public class ProductEntity implements Serializable {
         this.name = productName;
     }
 
-    public ProductEntity(String skuCode, String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating) {
+//    public ProductEntity(String skuCode, String productName, String description, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating) {
+//        this.skuCode = skuCode;
+//        this.name = productName;
+//        this.description = description;
+//        this.quantityOnHand = quantityOnHand;
+//        this.reorderQuantity = reorderQuantity;
+//        this.unitPrice = unitPrice;
+//        this.originalPrice = originalPrice;
+//        this.productRating = productRating;
+//    }
+    
+    public ProductEntity(String skuCode, String productName, String description, String imageLink, Integer quantityOnHand, Integer reorderQuantity, BigDecimal unitPrice, BigDecimal originalPrice, Integer productRating) {
         this.skuCode = skuCode;
         this.name = productName;
         this.description = description;
+        this.imageLink = imageLink;
         this.quantityOnHand = quantityOnHand;
         this.reorderQuantity = reorderQuantity;
         this.unitPrice = unitPrice;
         this.originalPrice = originalPrice;
         this.productRating = productRating;
-    }
+    }    
     
     
     public void addTag(TagEntity tagEntity)
@@ -198,6 +213,20 @@ public class ProductEntity implements Serializable {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * @retun the imageLink
+     */    
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    /**
+     * @param imageLink the imageLink to set
+     */    
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 
     /**
