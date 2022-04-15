@@ -43,15 +43,15 @@ public class ProductEntity implements Serializable {
     @NotNull
     @Size(min = 7, max = 7)
     private String skuCode;
-    @Column(nullable = false, length = 64)
+    @Column(nullable = false, length = 200)
     @NotNull
-    @Size(max = 80)
+    @Size(max = 200)
     private String name;
-    @Column(length = 128)
-    @Size(max = 128)
+    @Column(length = 300)
+    @Size(max = 300)
     private String description;
-    @Column(length = 200)
-    @Size (max = 200)
+    @Column(length = 300)
+    @Size (max = 300)
     private String imageLink;
     @Column(nullable = false)
     @NotNull
