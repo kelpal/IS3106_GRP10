@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.ArtistEntity;
 import entity.CustomerEntity;
 import java.util.List;
 import javax.ejb.Local;
@@ -31,5 +32,7 @@ public interface CustomerEntitySessionBeanLocal {
     public CustomerEntity retrieveCustomerById(Long employeeId) throws CustomerNotFoundException;
 
     public List<CustomerEntity> retrieveAllCustomers();
+
+    public void updateCustomer(CustomerEntity customer);
     
 }

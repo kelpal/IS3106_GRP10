@@ -98,6 +98,8 @@ public class ProductEntitySessionBean implements ProductEntitySessionBeanLocal {
                 entityManager.persist(newProductEntity);
                 newProductEntity.setCategoryEntity(categoryEntity);
                 
+                categoryEntity.getProductEntities().add(newProductEntity);
+                
                 if(tagIds != null && (!tagIds.isEmpty()))
                 {
                     for(Long tagId:tagIds)
@@ -380,7 +382,7 @@ public class ProductEntitySessionBean implements ProductEntitySessionBeanLocal {
                         }
                     }
                     
-                    productEntityToUpdate.setProductName(productEntity.getProductName());
+                    productEntityToUpdate.setName(productEntity.getName());
                     productEntityToUpdate.setDescription(productEntity.getDescription());
                     productEntityToUpdate.setQuantityOnHand(productEntity.getQuantityOnHand());
                     productEntityToUpdate.setReorderQuantity(productEntity.getReorderQuantity());

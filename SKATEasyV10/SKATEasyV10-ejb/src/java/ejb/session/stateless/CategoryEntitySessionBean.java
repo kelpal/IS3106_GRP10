@@ -61,6 +61,7 @@ public class CategoryEntitySessionBean implements CategoryEntitySessionBeanLocal
                     }
 
                     newCategoryEntity.setParentCategoryEntity(parentCategoryEntity);
+                    parentCategoryEntity.getSubCategoryEntities().add(newCategoryEntity);
                 }
                 
                 em.persist(newCategoryEntity);

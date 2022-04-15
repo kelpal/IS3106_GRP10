@@ -1,0 +1,450 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/defaultTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <div>
+            <h3>Tag and Category Management</h3>
+            
+            <p:messages id="messagesAll" />
+            <h:form>
+            
+                <p:menubar>
+
+                    <p:submenu label="File" icon="ui-icon-document">
+                        <p:menuitem value="Create New Category" onclick="PF('dialogCreateNewCategory').show()" icon="pi pi-plus" />
+                        <p:menuitem value="Create New Tag" onclick="PF('dialogCreateNewTag').show()" icon="pi pi-plus" />
+                    </p:submenu>                                        
+
+                </p:menubar>
+                <br/>
+
+            </h:form>
+            
+            <h:form id="formAllCategory">
+            
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllCategory" widgetVar="dataTableAllCategory" value="#{tagAndCategoryManagementManagedBean.categories}" var="category" rowKey="#{category.categoryId}" rowIndexVar="row"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllCategory').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Category ID" sortBy="#{category.categoryId}" filterBy="#{category.categoryId}" filterMatchMode="contains">
+                        <h:outputText value="#{category.categoryId}" />
+                    </p:column>
+                    
+                    <p:column headerText="Name" sortBy="#{category.name}" filterBy="#{category.name}" filterMatchMode="contains" style="text-align: right;">
+                        <h:outputText value="#{category.name}" />
+                    </p:column>
+
+
+                    <p:column headerText="Description" sortBy="#{category.description}" filterBy="#{category.description}" filterMatchMode="contains">
+                        <h:outputText value="#{category.description}" />
+                    </p:column>
+                    
+                    <p:column headerText="Parent Category" sortBy="#{category.parentCategoryEntity}" filterBy="#{category.parentCategoryEntity}" filterMatchMode="contains">
+                        <h:outputText value="#{category.parentCategoryEntity.name}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton actionListener="#{tagAndCategoryManagementManagedBean.doViewCategory}" update="formViewCategory" oncomplete="PF('dialogViewCategory').show()" icon="ui-icon-document" title="View">
+                            <f:attribute name="categoryToView" value="#{category}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{tagAndCategoryManagementManagedBean.doUpdateCategory}" update="formUpdateCategory" oncomplete="PF('dialogUpdateCategory').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="categoryToUpdate" value="#{category}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{tagAndCategoryManagementManagedBean.deleteCategory}" update="formAllCategory:dataTableAllCategory messagesAll">
+                            <f:attribute name="categoryToDelete" value="#{category}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete category #{category.categoryId} (Name: #{category.name})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+            
+            <h:form id="formCreateNewCategory">
+
+                <p:dialog id="dialogCreateNewCategory" widgetVar="dialogCreateNewCategory" header="Create New Category" closable="true">
+
+                    <p:messages id="messagesCreateNewCategory" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{tagAndCategoryManagementManagedBean.newCategory.name}" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{tagAndCategoryManagementManagedBean.newCategory.description}" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selParentCategory" value="Category " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selParentCategory" value="#{tagAndCategoryManagementManagedBean.parentIdNew}">
+                                    <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
+                                    <f:selectItems value="#{tagAndCategoryManagementManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selParentCategory" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Category" update="@form formAllCategory:dataTableAllCategory" actionListener="#{tagAndCategoryManagementManagedBean.createNewCategory}" oncomplete="PF('dialogCreateNewCategory').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <h:form id="formViewCategory">
+            
+            <p:dialog id="dialogViewCategory" widgetVar="dialogViewCategory" header="View Category" closable="true">
+
+                <p:panelGrid>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Category ID: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{tagAndCategoryManagementManagedBean.categoryToView.categoryId}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{tagAndCategoryManagementManagedBean.categoryToView.name}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Description: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{tagAndCategoryManagementManagedBean.categoryToView.description}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Parent Category " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{tagAndCategoryManagementManagedBean.categoryToView.parentCategoryEntity.name}" />
+                        </p:column>
+                    </p:row>
+                    
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Product(s): " />
+                        </p:column>
+                        <p:column>
+                            <p:dataList value="#{tagAndCategoryManagementManagedBean.categoryToView.productEntities}" var="product" type="unordered">
+                                #{product.name}
+                            </p:dataList>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Sub Category(ies): " />
+                        </p:column>
+                        <p:column>
+                            <p:dataList value="#{tagAndCategoryManagementManagedBean.categoryToView.subCategoryEntities}" var="subCat" type="unordered">
+                                #{subCat.name}
+                            </p:dataList>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+            </p:dialog>
+            
+            </h:form>
+
+            <h:form id="formUpdateCategory">
+
+                <p:dialog id="dialogUpdateCategory" widgetVar="dialogUpdateCategory" header="Update Category" closable="true">
+
+                    <p:messages id="messagesUpdateCategory" redisplay="false" />
+
+                    <p:panelGrid>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value=" Category ID " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{tagAndCategoryManagementManagedBean.categoryToUpdate.categoryId}" />                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{tagAndCategoryManagementManagedBean.categoryToUpdate.name}" placeholder="Product 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{tagAndCategoryManagementManagedBean.categoryToUpdate.description}" placeholder="Product 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selParentCategory" value="Parent Category " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selParentCategory" value="#{tagAndCategoryManagementManagedBean.parentIdUpdate}">
+                                    <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
+                                    <f:selectItems value="#{tagAndCategoryManagementManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selParentCategory" />
+                            </p:column>
+                        </p:row>
+                        
+
+                        
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Category" update="@form formAllCategory:dataTableAllCategory" actionListener="#{tagAndCategoryManagementManagedBean.updateCategory}" oncomplete="PF('dialogUpdateCategory').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <br/>
+            
+            <h:form id="formAllTag">
+            
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllTag" widgetVar="dataTableAllTag" value="#{tagAndCategoryManagementManagedBean.tags}" var="tag" rowKey="#{tag.tagId}" rowIndexVar="row"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllTag').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Tag ID" sortBy="#{tag.tagId}" filterBy="#{tag.tagId}" filterMatchMode="contains">
+                        <h:outputText value="#{tag.tagId}" />
+                    </p:column>
+                    
+                    <p:column headerText="Name" sortBy="#{tag.name}" filterBy="#{tag.name}" filterMatchMode="contains" style="text-align: right;">
+                        <h:outputText value="#{tag.name}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton actionListener="#{tagAndCategoryManagementManagedBean.doViewTag}" update="formViewTag" oncomplete="PF('dialogViewTag').show()" icon="ui-icon-document" title="View">
+                            <f:attribute name="tagToView" value="#{tag}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{tagAndCategoryManagementManagedBean.doUpdateTag}" update="formUpdateTag" oncomplete="PF('dialogUpdateTag').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="tagToUpdate" value="#{tag}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{tagAndCategoryManagementManagedBean.deleteTag}" update="formAllTag:dataTableAllTag messagesAll">
+                            <f:attribute name="tagToDelete" value="#{tag}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete tag #{tag.tagId} (Name: #{tag.name})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+            
+            <h:form id="formCreateNewTag">
+
+                <p:dialog id="dialogCreateNewTag" widgetVar="dialogCreateNewTag" header="Create New Tag" closable="true">
+
+                    <p:messages id="messagesCreateNewTag" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{tagAndCategoryManagementManagedBean.newTag.name}" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Tag" update="@form formAllTag:dataTableAllTag" actionListener="#{tagAndCategoryManagementManagedBean.createNewTag}" oncomplete="PF('dialogCreateNewTag').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <h:form id="formViewTag">
+            
+            <p:dialog id="dialogViewTag" widgetVar="dialogViewTag" header="View Tag" closable="true">
+
+                <p:panelGrid>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Tag ID: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{tagAndCategoryManagementManagedBean.tagToView.tagId}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{tagAndCategoryManagementManagedBean.tagToView.name}" />
+                        </p:column>
+                    </p:row>
+                    
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Product(s): " />
+                        </p:column>
+                        <p:column>
+                            <p:dataList value="#{tagAndCategoryManagementManagedBean.tagToView.productEntities}" var="product" type="unordered">
+                                #{product.name}
+                            </p:dataList>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+            
+            </h:form>
+
+            <h:form id="formUpdateTag">
+
+                <p:dialog id="dialogUpdateTag" widgetVar="dialogUpdateTag" header="Update Tag" closable="true">
+
+                    <p:messages id="messagesUpdateTag" redisplay="false" />
+
+                    <p:panelGrid>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value=" Tag ID " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{tagAndCategoryManagementManagedBean.tagToUpdate.tagId}" />                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{tagAndCategoryManagementManagedBean.tagToUpdate.name}" placeholder="Product 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Tag" update="@form formAllTag:dataTableAllTag" actionListener="#{tagAndCategoryManagementManagedBean.updateTag}" oncomplete="PF('dialogUpdateTag').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+
+        </div>
+    </ui:define>
+
+</ui:composition>

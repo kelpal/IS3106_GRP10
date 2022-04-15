@@ -11,6 +11,7 @@ import ejb.session.stateless.CustomerEntitySessionBeanLocal;
 import ejb.session.stateless.CustomisationRequestSessionBeanLocal;
 //import ejb.session.stateless.CustomerEntitySessionBeanLocal;
 import ejb.session.stateless.ProductEntitySessionBeanLocal;
+import ejb.session.stateless.SaleTransactionEntitySessionBeanLocal;
 import ejb.session.stateless.StaffEntitySessionBeanLocal;
 import ejb.session.stateless.TagEntitySessionBeanLocal;
 import entity.ArtistEntity;
@@ -19,6 +20,8 @@ import entity.CustomerEntity;
 import entity.CustomisationRequest;
 //import entity.CustomerEntity;
 import entity.ProductEntity;
+import entity.SaleTransactionEntity;
+import entity.SaleTransactionLineItemEntity;
 import entity.StaffEntity;
 import entity.TagEntity;
 import java.math.BigDecimal;
@@ -41,6 +44,7 @@ import util.exception.CategoryNotFoundException;
 import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewCustomisationRequestException;
 import util.exception.CreateNewProductException;
+import util.exception.CreateNewSaleTransactionException;
 import util.exception.CreateNewTagException;
 import util.exception.CustomerUsernameExistException;
 import util.exception.InputDataValidationException;
@@ -60,6 +64,9 @@ import util.exception.UnknownPersistenceException;
 public class DataInitSessionBean {
 
     @EJB
+    private SaleTransactionEntitySessionBeanLocal saleTransactionEntitySessionBeanLocal;
+
+    @EJB
     private CustomisationRequestSessionBeanLocal customisationRequestSessionBeanLocal;
 
     @EJB
@@ -67,6 +74,8 @@ public class DataInitSessionBean {
 
     @EJB
     private StaffEntitySessionBeanLocal staffEntitySessionBeanLocal;
+    
+    
     
     
 
@@ -116,16 +125,29 @@ public class DataInitSessionBean {
             TagEntity tagA = tagEntitySessionBeanLocal.createNewTagEntity(new TagEntity("Tag A"));
             TagEntity tagB = tagEntitySessionBeanLocal.createNewTagEntity(new TagEntity("Tag B"));  
             
+            
             List<Long> tagIds = new ArrayList<>();
             tagIds.add(tagA.getTagId());
             tagIds.add(tagB.getTagId());
             System.out.println(tagIds);
             
-            productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000001","Product A", "Product A", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
-            productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000002","Product B", "Product B", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
+            ProductEntity productA = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000001","Product A", "Product A", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
+            ProductEntity productB = productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000002","Product B", "Product B", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
             productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000003","Product C", "Product C", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
             productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000004","Product D", "Product D", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
             productEntitySessionBeanLocal.createNewProduct(new ProductEntity("0000005","Product E", "Product E", 10, 10, new BigDecimal(10),new BigDecimal(10), 5), catA.getCategoryId(),null);
+            
+            SaleTransactionLineItemEntity stli1 = new SaleTransactionLineItemEntity(1, productA, 1, new BigDecimal("10"), new BigDecimal("10"));
+            SaleTransactionLineItemEntity stli2 = new SaleTransactionLineItemEntity(1, productB, 1, new BigDecimal("20"), new BigDecimal("20"));
+            
+            List<SaleTransactionLineItemEntity> stlis = new ArrayList<>();
+            stlis.add(stli1);
+            stlis.add(stli2);
+            
+            SaleTransactionEntity st = new SaleTransactionEntity(3, 2, new BigDecimal("30"), new Date(), stlis, Boolean.FALSE);
+            
+            saleTransactionEntitySessionBeanLocal.createNewSaleTransaction(admin.getStaffId(), st);
+
             
             ArtistEntity artist1 = artistEntitySessionBeanLocal.createNewArtist(new ArtistEntity("Artist", "1",AccessRightEnum.ARTIST, "artist1", "password"));
 
@@ -134,7 +156,7 @@ public class DataInitSessionBean {
             customisationRequestSessionBeanLocal.createCustomisationRequest(new CustomisationRequest("First Request", new Date(), StatusEnum.PENDING), artist1.getStaffId(), customer1.getCustomerId());
 
         } catch (CreateNewCategoryException | InputDataValidationException | ArtistUsernameExistException | CustomerUsernameExistException | StaffUsernameExistException | UnknownPersistenceException | CreateNewTagException | CreateNewProductException
-                | ProductSkuCodeExistException | CreateNewCustomisationRequestException ex) {
+                | ProductSkuCodeExistException | CreateNewCustomisationRequestException | CreateNewSaleTransactionException ex) {
             ex.printStackTrace();
         }
 

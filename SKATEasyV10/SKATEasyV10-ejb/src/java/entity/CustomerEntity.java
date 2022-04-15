@@ -45,6 +45,8 @@ public class CustomerEntity {
     @NotNull
     @Size(min = 8, max = 32)
     private String password; 
+    @NotNull
+    private Boolean isDisabled;
     
     @OneToMany(mappedBy = "customerEntity")
     private List<SaleTransactionEntity> saleTransactionEntities;
@@ -55,10 +57,11 @@ public class CustomerEntity {
     public CustomerEntity() {
         this.saleTransactionEntities = new ArrayList<>();
         this.customisationRequests = new ArrayList<>();
+        this.isDisabled = false;
     }
 
     public CustomerEntity(String name, String email, String username, String password) {
-        super();
+        this();
         this.name = name;
         this.email = email;
         this.username = username;
@@ -159,6 +162,20 @@ public class CustomerEntity {
      */
     public void setCustomisationRequests(List<CustomisationRequest> customisationRequests) {
         this.customisationRequests = customisationRequests;
+    }
+
+    /**
+     * @return the isDisabled
+     */
+    public Boolean getIsDisabled() {
+        return isDisabled;
+    }
+
+    /**
+     * @param isDisabled the isDisabled to set
+     */
+    public void setIsDisabled(Boolean isDisabled) {
+        this.isDisabled = isDisabled;
     }
     
     

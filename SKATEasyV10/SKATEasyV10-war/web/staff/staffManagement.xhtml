@@ -17,7 +17,10 @@
 
                     <p:submenu label="File" icon="ui-icon-document">
                         <p:menuitem value="Create New Staff" onclick="PF('dialogCreateNewStaff').show()" icon="pi pi-plus" />
-                    </p:submenu>                                        
+                    </p:submenu>
+                    <p:submenu label="File" icon="ui-icon-document">
+                        <p:menuitem value="Create New Artist" onclick="PF('dialogCreateNewArtist').show()" icon="pi pi-plus" />
+                    </p:submenu>   
 
                 </p:menubar>
                 <br/>
@@ -68,7 +71,10 @@
                         </p:commandButton>
                         <p:commandButton icon="ui-icon-trash" actionListener="#{staffManagementManagedBean.deleteStaff}" update="formAllStaff:dataTableAllStaff formAllStaff:messages">
                             <f:attribute name="staffToDelete" value="#{staff}" />
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete staff #{staff.staffId} (Username: #{staff.staffId})?" icon="ui-icon-alert" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete staff #{staff.staffId} (Username: #{staff.username})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{staffManagementManagedBean.doEditPortfolio}" rendered="#{staff.accessRightEnum == 'ARTIST'}" update="formEditPortfolio" oncomplete="PF('dialogEditPortfolio').show()" icon="ui-icon-folder" title="Edit Portfolio">
+                            <f:attribute name="artistToEditId" value="#{staff.staffId}" />
                         </p:commandButton>
                     </p:column>
 
@@ -120,7 +126,8 @@
                             <p:column>
                             <p:selectOneMenu id="selAccessRight" value="#{staffManagementManagedBean.newStaff.accessRightEnum}" required="true">
                                 <f:selectItem itemValue="null" itemLabel="[Select]" noSelectionOption="true" />                                
-                                <f:selectItems value="#{staffManagementManagedBean.accessRightEnums}" />
+                                <f:selectItem itemValue="STAFF" itemLabel="STAFF" />
+                                <f:selectItem itemValue="ADMINISTRATOR" itemLabel="ADMINISTRATOR" />
                             </p:selectOneMenu>
                             </p:column>
                             <p:column>
@@ -282,14 +289,15 @@
                             </p:column>
                         </p:row>
 
-                        <p:row>
+                        <p:row rendered="#{staff.accessRightEnum != 'ARTIST'}">
                             <p:column>
                                 <p:outputLabel for="selAccessRight" value="Access Right " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
                             <p:selectOneMenu id="selAccessRight" value="#{staffManagementManagedBean.staffToUpdate.accessRightEnum}" required="true">
                                 <f:selectItem itemValue="null" itemLabel="[Select]" noSelectionOption="true" />                                
-                                <f:selectItems value="#{staffManagementManagedBean.accessRightEnums}" />
+                                <f:selectItem itemValue="STAFF" itemLabel="STAFF" />
+                                <f:selectItem itemValue="ADMINISTRATOR" itemLabel="ADMINISTRATOR" />
                             </p:selectOneMenu>
                             </p:column>
                             <p:column>
@@ -300,6 +308,108 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:commandButton value="Update Staff" update="@form formAllStaff:dataTableAllStaff" actionListener="#{staffManagementManagedBean.updateStaff}" oncomplete="PF('dialogUpdateStaff').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <h:form id="formEditPortfolio">
+
+                <p:dialog id="dialogEditPortfolio" widgetVar="dialogEditPortfolio" header="Edit Artist Portfolio" closable="true">
+
+                    <p:messages id="messagesEditPortfolio" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="portfolio" value="Portfolio " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="portfolio" value="#{staffManagementManagedBean.artistToEdit.portfolio}" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="portfolio" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Edit Portfolio" update="@form" actionListener="#{staffManagementManagedBean.editPortfolio}" oncomplete="PF('dialogEditPortfolio').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <h:form id="formCreateNewArtist">
+
+                <p:dialog id="dialogCreateNewArtist" widgetVar="dialogCreateNewArtist" header="Create New Artist" closable="true">
+
+                    <p:messages id="messagesCreateNewArtist" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="firstName" value="First Name " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="firstName" value="#{staffManagementManagedBean.newArtist.firstName}" required="true" requiredMessage="First Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="firstName" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="lastName" value="Last Name " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="lastName" value="#{staffManagementManagedBean.newArtist.lastName}" required="true" requiredMessage="Last Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="lastName" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="username" value="Username " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="username" value="#{staffManagementManagedBean.newArtist.username}" placeholder="Staff 1" required="true" requiredMessage="Username is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="username" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="password" value="Password " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:password id="password" value="#{staffManagementManagedBean.newArtist.password}" required="true" requiredMessage="Password is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="password" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Artist" update="@form formAllStaff:dataTableAllStaff" actionListener="#{staffManagementManagedBean.createNewArtist}" oncomplete="PF('dialogCreateNewArtist').show();" />
                             </p:column>
                         </p:row>
 

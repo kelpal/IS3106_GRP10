@@ -89,7 +89,14 @@ public class SaleTransactionEntitySessionBean implements SaleTransactionEntitySe
     {
         Query query = entityManager.createQuery("SELECT st FROM SaleTransactionEntity st");
         
-        return query.getResultList();
+        List<SaleTransactionEntity> saleTransactionEntities = query.getResultList();
+        
+        for (SaleTransactionEntity saleTransaction:saleTransactionEntities)
+        {
+            saleTransaction.getSaleTransactionLineItemEntities().size();
+        }
+        
+        return saleTransactionEntities;
     }
     
     

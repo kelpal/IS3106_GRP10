@@ -1,16 +1,15 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/defaultTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                template="/template/defaultTemplate.xhtml"
-                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        
 
-        
         <div>
             <h3>Product Management</h3>
             
@@ -31,8 +30,10 @@
             
                 <p:messages id="messages" redisplay="false" closable="true" />
 
-                <p:dataTable id="dataTableAllProducts" widgetVar="dataTableAllProducts" value="#{viewAllProductsManagedBean.productEntities}" var="productEntity" rowKey="#{productEntity.productId}" rowIndexVar="row"
-                             filteredValue="#{viewAllProductsManagedBean.filteredProductEntities}"
+
+                <p:dataTable id="dataTableAllProducts" widgetVar="dataTableAllProducts" value="#{productManagementManagedBean.productEntities}" var="productEntity" rowKey="#{productEntity.productId}" rowIndexVar="row"
+                             filteredValue="#{productManagementManagedBean.filteredProductEntities}"
+
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
                     <f:facet name="header">
@@ -50,8 +51,10 @@
                         <h:outputText value="#{productEntity.productId}" />
                     </p:column>                            
 
-                    <p:column headerText="Name" sortBy="#{productEntity.productName}" filterBy="#{productEntity.productName}" filterMatchMode="contains">
-                        <h:outputText value="#{productEntity.productName}" />
+
+                    <p:column headerText="Name" sortBy="#{productEntity.name}" filterBy="#{productEntity.name}" filterMatchMode="contains">
+                        <h:outputText value="#{productEntity.name}" />
+
                     </p:column>
                     
                     <p:column headerText="Description" sortBy="#{productEntity.description}" filterBy="#{productEntity.description}" filterMatchMode="contains">
@@ -72,22 +75,26 @@
                         <f:facet name="filter">
                             <p:selectOneMenu id="selCategory" onchange="PF('dataTableAllProducts').filter()">
                                 <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
-                                <f:selectItems value="#{viewAllProductsManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.name}" itemLabel="#{categoryEntity.name}" />
+
+                                <f:selectItems value="#{productManagementManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.name}" itemLabel="#{categoryEntity.name}" />
+
                             </p:selectOneMenu>
                         </f:facet>
                         <h:outputText value="#{productEntity.categoryEntity.name}" />
                     </p:column>
 
                     <p:column headerText="Action" >
-                        <p:commandButton update="ccViewProduct:formViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
-                            <f:setPropertyActionListener value="#{productEntity}" target="#{viewAllProductsManagedBean.viewProductManagedBean.productEntityToView}" />
+
+                        <p:commandButton actionListener="#{productManagementManagedBean.doViewStaff}" update="formViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
+                            <f:attribute name="productToView" value="#{productEntity}" />
                         </p:commandButton>
-                        <p:commandButton actionListener="#{viewAllProductsManagedBean.doUpdateProduct}" update="formUpdateProduct" oncomplete="PF('dialogUpdateProduct').show()" icon="ui-icon-pencil" title="Update">
-                            <f:attribute name="productEntityToUpdate" value="#{productEntity}" />
+                        <p:commandButton actionListener="#{productManagementManagedBean.doUpdateProduct}" update="formUpdateProduct" oncomplete="PF('dialogUpdateProduct').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="productToUpdate" value="#{productEntity}" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{viewAllProductsManagedBean.deleteProduct}" update="formAllProducts:dataTableAllProducts formAllProducts:messages">
-                            <f:attribute name="productEntityToDelete" value="#{productEntity}" />
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{productEntity.productName} (SKU Code: #{productEntity.skuCode})?" icon="ui-icon-alert" />
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{productManagementManagedBean.deleteProduct}" update="formAllProducts:dataTableAllProducts formAllProducts:messages">
+                            <f:attribute name="productToDelete" value="#{productEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{productEntity.name} (SKU Code: #{productEntity.skuCode})?" icon="ui-icon-alert" />
+
                         </p:commandButton>
                     </p:column>
 
@@ -113,7 +120,9 @@
                                 <p:outputLabel for="skuCode" value="SKU Code: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="skuCode" value="#{viewAllProductsManagedBean.newProductEntity.skuCode}" placeholder="PROD999" required="true" requiredMessage="SKU Code is required" />
+
+                                <p:inputText id="skuCode" value="#{productManagementManagedBean.newProductEntity.skuCode}" placeholder="PROD999" required="true" requiredMessage="SKU Code is required" />
+
                             </p:column>
                             <p:column>
                                 <p:message for="skuCode" />
@@ -125,7 +134,7 @@
                                 <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="name" value="#{viewAllProductsManagedBean.newProductEntity.productName}" placeholder="Product 1" required="true" requiredMessage="Name is required" />
+                                <p:inputText id="name" value="#{productManagementManagedBean.newProductEntity.name}" placeholder="Product 1" required="true" requiredMessage="Name is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="name" />
@@ -137,7 +146,7 @@
                                 <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="description" value="#{viewAllProductsManagedBean.newProductEntity.description}" placeholder="Product 1" required="true" requiredMessage="Description is required" />
+                                <p:inputText id="description" value="#{productManagementManagedBean.newProductEntity.description}" placeholder="Product 1" required="true" requiredMessage="Description is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="description" />
@@ -149,7 +158,7 @@
                                 <p:outputLabel for="quantityOnHand" value="Quantity On Hand " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:spinner id="quantityOnHand" value="#{viewAllProductsManagedBean.newProductEntity.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                                <p:spinner id="quantityOnHand" value="#{productManagementManagedBean.newProductEntity.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="quantityOnHand" />
@@ -158,10 +167,22 @@
 
                         <p:row>
                             <p:column>
+                                <p:outputLabel for="reorderQuantity" value="Reorder Quantity " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="reorderQuantity" value="#{productManagementManagedBean.newProductEntity.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="reorderQuantity" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
                                 <p:outputLabel for="unitPrice" value="Unit Price " style="font-weight: bold;" />
                             </p:column>
                             <p:column>                            
-                                <p:spinner id="unitPrice" value="#{viewAllProductsManagedBean.newProductEntity.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
+                                <p:spinner id="unitPrice" value="#{productManagementManagedBean.newProductEntity.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="unitPrice" />
@@ -173,7 +194,7 @@
                                 <p:outputLabel for="productRating" value="Product Rating " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:rating id="productRating" value="#{viewAllProductsManagedBean.newProductEntity.productRating}" stars="5" required="true" requiredMessage="Product Rating is required" cancel="false">
+                                <p:rating id="productRating" value="#{productManagementManagedBean.newProductEntity.productRating}" stars="5" required="true" requiredMessage="Product Rating is required" cancel="false">
                                     <f:validateLongRange minimum="1" maximum="5" />
                                 </p:rating>
                             </p:column>
@@ -187,9 +208,9 @@
                                 <p:outputLabel for="selCategory" value="Category " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="selCategory" value="#{viewAllProductsManagedBean.categoryIdNew}">
+                                <p:selectOneMenu id="selCategory" value="#{productManagementManagedBean.categoryIdNew}">
                                     <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
-                                    <f:selectItems value="#{viewAllProductsManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.categoryId}" itemLabel="#{categoryEntity.name}" />
+                                    <f:selectItems value="#{productManagementManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.categoryId}" itemLabel="#{categoryEntity.name}" />
                                 </p:selectOneMenu>
                             </p:column>
                             <p:column>
@@ -202,8 +223,8 @@
                                 <p:outputLabel for="selTags" value="Tag(s) " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectManyMenu id="selTags" value="#{viewAllProductsManagedBean.tagIdsNew}" showCheckbox="true">
-                                    <f:selectItems value="#{viewAllProductsManagedBean.tagEntities}" var="tagEntity" itemValue="#{tagEntity.tagId}" itemLabel="#{tagEntity.name}" />
+                                <p:selectManyMenu id="selTags" value="#{productManagementManagedBean.tagIdsNew}" showCheckbox="true">
+                                    <f:selectItems value="#{productManagementManagedBean.tagEntities}" var="tagEntity" itemValue="#{tagEntity.tagId}" itemLabel="#{tagEntity.name}" />
                                 </p:selectManyMenu>
                             </p:column>
                             <p:column>
@@ -214,7 +235,7 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:commandButton type="reset" value="Clear" />&nbsp;
-                                <p:commandButton  value="Create New Product" update="@form formAllProducts:dataTableAllProducts" actionListener="#{viewAllProductsManagedBean.createNewProduct}" oncomplete="PF('dialogCreateNewProduct').show();" />
+                                <p:commandButton  value="Create New Product" update="@form formAllProducts:dataTableAllProducts" actionListener="#{productManagementManagedBean.createNewProduct}" oncomplete="PF('dialogCreateNewProduct').show();" />
                             </p:column>
                         </p:row>
 
@@ -223,8 +244,111 @@
                 </p:dialog>
 
             </h:form>
+          
+            <h:form id="formViewProduct">
+            
+            <p:dialog id="dialogViewProduct" widgetVar="dialogViewProduct" header="View Product" closable="true">
 
-            <ez:ViewProduct id="ccViewProduct" />
+                <p:panelGrid>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Product ID: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagementManagedBean.productEntityToView.productId}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="SKU Code: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagementManagedBean.productEntityToView.skuCode}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagementManagedBean.productEntityToView.name}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Description: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagementManagedBean.productEntityToView.description}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Quantity On Hand: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagementManagedBean.productEntityToView.quantityOnHand}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Reorder Quantity: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagementManagedBean.productEntityToView.reorderQuantity}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Unit Price: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagementManagedBean.productEntityToView.unitPrice}">
+                                <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Product Rating: " />
+                        </p:column>
+                        <p:column>
+                            <p:rating id="productRating" value="#{productManagementManagedBean.productEntityToView.productRating}" stars="5" readonly="true" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Category: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagementManagedBean.productEntityToView.categoryEntity.name}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Tag(s): " />
+                        </p:column>
+                        <p:column>
+                            <p:dataList value="#{productManagementManagedBean.productEntityToView.tagEntities}" var="tag" type="unordered">
+                                #{tag.name}
+                            </p:dataList>
+                        </p:column>
+                    </p:row>
+                    
+                </p:panelGrid>
+
+            </p:dialog>
+            </h:form>
 
             <h:form id="formUpdateProduct">
 
@@ -239,7 +363,7 @@
                                 <h:outputLabel value="Product ID: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewAllProductsManagedBean.selectedProductEntityToUpdate.productId}" />
+                                <h:outputText value="#{productManagementManagedBean.productEntityToUpdate.productId}" />
                             </p:column>
                             <p:column>
                                 &nbsp;
@@ -251,7 +375,7 @@
                                 <h:outputLabel value="SKU Code: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewAllProductsManagedBean.selectedProductEntityToUpdate.skuCode}" />
+                                <h:outputText value="#{productManagementManagedBean.productEntityToUpdate.skuCode}" />
                             </p:column>
                             <p:column>
                                 &nbsp;
@@ -263,7 +387,7 @@
                                 <p:outputLabel for="name" value="Name: " />
                             </p:column>
                             <p:column>
-                                <p:inputText id="name" value="#{viewAllProductsManagedBean.selectedProductEntityToUpdate.productName}" placeholder="Product 1" required="true" requiredMessage="Name is required" />
+                                <p:inputText id="name" value="#{productManagementManagedBean.productEntityToUpdate.name}" placeholder="Product 1" required="true" requiredMessage="Name is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="name" />
@@ -275,7 +399,7 @@
                                 <p:outputLabel for="description" value="Description " />
                             </p:column>
                             <p:column>
-                                <p:inputText id="description" value="#{viewAllProductsManagedBean.selectedProductEntityToUpdate.description}" placeholder="Product 1" required="true" requiredMessage="Description is required" />
+                                <p:inputText id="description" value="#{productManagementManagedBean.productEntityToUpdate.description}" placeholder="Product 1" required="true" requiredMessage="Description is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="description" />
@@ -287,20 +411,31 @@
                                 <p:outputLabel for="quantityOnHand" value="Quantity On Hand " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="quantityOnHand" value="#{viewAllProductsManagedBean.selectedProductEntityToUpdate.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                                <p:spinner id="quantityOnHand" value="#{productManagementManagedBean.productEntityToUpdate.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="quantityOnHand" />
                             </p:column>
                         </p:row>
 
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="reorderQuantity" value="Reorder Quantity " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="reorderQuantity" value="#{productManagementManagedBean.productEntityToUpdate.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" validator="reorderQuantityValidator" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="reorderQuantity" />
+                            </p:column>
+                        </p:row>
 
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="unitPrice" value="Unit Price " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="unitPrice" value="#{viewAllProductsManagedBean.selectedProductEntityToUpdate.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
+                                <p:spinner id="unitPrice" value="#{productManagementManagedBean.productEntityToUpdate.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="unitPrice" />
@@ -312,7 +447,7 @@
                                 <p:outputLabel for="productRating" value="Product Rating " />
                             </p:column>
                             <p:column>
-                                <p:rating id="productRating" value="#{viewAllProductsManagedBean.selectedProductEntityToUpdate.productRating}" stars="5" required="true" requiredMessage="Product Rating is required" cancel="false">
+                                <p:rating id="productRating" value="#{productManagementManagedBean.productEntityToUpdate.productRating}" stars="5" required="true" requiredMessage="Product Rating is required" cancel="false">
                                     <f:validateLongRange minimum="1" maximum="5" />
                                 </p:rating>
                             </p:column>
@@ -326,9 +461,9 @@
                                 <p:outputLabel for="selCategory" value="Category " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="selCategory" value="#{viewAllProductsManagedBean.categoryIdUpdate}">
+                                <p:selectOneMenu id="selCategory" value="#{productManagementManagedBean.categoryIdUpdate}">
                                     <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
-                                    <f:selectItems value="#{viewAllProductsManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.categoryId}" itemLabel="#{categoryEntity.name}" />
+                                    <f:selectItems value="#{productManagementManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.categoryId}" itemLabel="#{categoryEntity.name}" />
                                 </p:selectOneMenu>
                             </p:column>
                             <p:column>
@@ -341,8 +476,8 @@
                                 <p:outputLabel for="selTags" value="Tag(s) " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectManyMenu id="selTags" value="#{viewAllProductsManagedBean.tagIdsUpdate}" showCheckbox="true">
-                                    <f:selectItems value="#{viewAllProductsManagedBean.tagEntities}" var="tagEntity" itemValue="#{tagEntity.tagId}" itemLabel="#{tagEntity.name}" />
+                                <p:selectManyMenu id="selTags" value="#{productManagementManagedBean.tagIdsUpdate}" showCheckbox="true">
+                                    <f:selectItems value="#{productManagementManagedBean.tagEntities}" var="tagEntity" itemValue="#{tagEntity.tagId}" itemLabel="#{tagEntity.name}" />
                                 </p:selectManyMenu>
                             </p:column>
                             <p:column>
@@ -352,7 +487,7 @@
 
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Product" update="@form formAllProducts:dataTableAllProducts" actionListener="#{viewAllProductsManagedBean.updateProduct}" oncomplete="PF('dialogUpdateProduct').show();" />
+                                <p:commandButton value="Update Product" update="@form formAllProducts:dataTableAllProducts" actionListener="#{productManagementManagedBean.updateProduct}" oncomplete="PF('dialogUpdateProduct').show();" />
                             </p:column>
                         </p:row>
 
@@ -363,7 +498,6 @@
             </h:form>
 
         </div>
-        
     </ui:define>
 
 </ui:composition>
