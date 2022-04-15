@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./../template/defaultTemplate.xhtml"
@@ -8,6 +9,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
+
         <div>
             <h3>Product Management</h3>
             
@@ -28,8 +30,10 @@
             
                 <p:messages id="messages" redisplay="false" closable="true" />
 
+
                 <p:dataTable id="dataTableAllProducts" widgetVar="dataTableAllProducts" value="#{productManagementManagedBean.productEntities}" var="productEntity" rowKey="#{productEntity.productId}" rowIndexVar="row"
                              filteredValue="#{productManagementManagedBean.filteredProductEntities}"
+
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
                     <f:facet name="header">
@@ -47,8 +51,10 @@
                         <h:outputText value="#{productEntity.productId}" />
                     </p:column>                            
 
+
                     <p:column headerText="Name" sortBy="#{productEntity.name}" filterBy="#{productEntity.name}" filterMatchMode="contains">
                         <h:outputText value="#{productEntity.name}" />
+
                     </p:column>
                     
                     <p:column headerText="Description" sortBy="#{productEntity.description}" filterBy="#{productEntity.description}" filterMatchMode="contains">
@@ -69,13 +75,16 @@
                         <f:facet name="filter">
                             <p:selectOneMenu id="selCategory" onchange="PF('dataTableAllProducts').filter()">
                                 <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+
                                 <f:selectItems value="#{productManagementManagedBean.categoryEntities}" var="categoryEntity" itemValue="#{categoryEntity.name}" itemLabel="#{categoryEntity.name}" />
+
                             </p:selectOneMenu>
                         </f:facet>
                         <h:outputText value="#{productEntity.categoryEntity.name}" />
                     </p:column>
 
                     <p:column headerText="Action" >
+
                         <p:commandButton actionListener="#{productManagementManagedBean.doViewStaff}" update="formViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
                             <f:attribute name="productToView" value="#{productEntity}" />
                         </p:commandButton>
@@ -85,6 +94,7 @@
                         <p:commandButton icon="ui-icon-trash" actionListener="#{productManagementManagedBean.deleteProduct}" update="formAllProducts:dataTableAllProducts formAllProducts:messages">
                             <f:attribute name="productToDelete" value="#{productEntity}" />
                             <p:confirm header="Confirmation" message="Are you sure you want to delete #{productEntity.name} (SKU Code: #{productEntity.skuCode})?" icon="ui-icon-alert" />
+
                         </p:commandButton>
                     </p:column>
 
@@ -110,7 +120,9 @@
                                 <p:outputLabel for="skuCode" value="SKU Code: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
+
                                 <p:inputText id="skuCode" value="#{productManagementManagedBean.newProductEntity.skuCode}" placeholder="PROD999" required="true" requiredMessage="SKU Code is required" />
+
                             </p:column>
                             <p:column>
                                 <p:message for="skuCode" />
@@ -232,7 +244,7 @@
                 </p:dialog>
 
             </h:form>
-
+          
             <h:form id="formViewProduct">
             
             <p:dialog id="dialogViewProduct" widgetVar="dialogViewProduct" header="View Product" closable="true">
@@ -336,7 +348,6 @@
                 </p:panelGrid>
 
             </p:dialog>
-            
             </h:form>
 
             <h:form id="formUpdateProduct">

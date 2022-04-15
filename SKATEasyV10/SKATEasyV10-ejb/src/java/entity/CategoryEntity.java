@@ -96,15 +96,13 @@ public class CategoryEntity implements Serializable {
         return "entity.CategoryEntity[ id=" + categoryId + " ]";
     }
         /**
-     * @return the categoryName
+     * @return the name
      */
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the categoryName to set
-     */
+
     public void setName(String name) {
         this.name = name;
     }
