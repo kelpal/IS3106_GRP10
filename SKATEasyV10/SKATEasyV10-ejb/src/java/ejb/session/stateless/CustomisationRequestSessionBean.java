@@ -15,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -23,6 +24,7 @@ import util.exception.ArtistNotFoundException;
 import util.exception.CreateNewCustomisationRequestException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerUsernameExistException;
+import util.exception.CustomisationRequestNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 
@@ -110,6 +112,40 @@ public class CustomisationRequestSessionBean implements CustomisationRequestSess
 
         return artist.getCustomisationRequests();
 
+    }
+    
+    @Override
+    public List<CustomisationRequest> retreiveCustomisationRequestsByDate(Long artistId) throws ArtistNotFoundException
+    {
+
+        Query query = em.createQuery("SELECT cr FROM CustomisationRequest cr WHERE cr.artistEntity.staffId = :inArtistId ORDER BY cr.requestDate desc");
+        query.setParameter("inArtistId", artistId);
+
+        return query.getResultList();
+
+    }
+    
+    @Override
+    public CustomisationRequest retrieveCustomisationRequestById(Long requestId) throws CustomisationRequestNotFoundException
+    {
+        CustomisationRequest request = em.find(CustomisationRequest.class, requestId);
+        
+        if(request != null)
+        {
+            return request;
+        }
+        else
+        {
+            throw new CustomisationRequestNotFoundException("Customisation Request ID " + requestId + " does not exist");
+        }
+    }
+    
+     @Override
+    public CustomisationRequest updateCustomisationRequest(CustomisationRequest newRequest)
+    {
+        em.merge(newRequest);
+        
+        return newRequest;
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<CustomisationRequest>> constraintViolations)

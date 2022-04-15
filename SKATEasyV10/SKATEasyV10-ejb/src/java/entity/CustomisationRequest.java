@@ -26,6 +26,7 @@ import util.enumeration.StatusEnum;
 @Entity
 public class CustomisationRequest implements Serializable {
 
+  
     
 
     private static final long serialVersionUID = 1L;
@@ -37,6 +38,8 @@ public class CustomisationRequest implements Serializable {
     private String description;
     @Temporal(TemporalType.TIMESTAMP)
     private Date requestDate;  
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date completionDate; 
     @Column(nullable = false)
     @NotNull
     private StatusEnum status;
@@ -160,6 +163,34 @@ public class CustomisationRequest implements Serializable {
      */
     public void setArtistEntity(ArtistEntity artistEntity) {
         this.artistEntity = artistEntity;
+    }
+    
+      /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the completionDate
+     */
+    public Date getCompletionDate() {
+        return completionDate;
+    }
+
+    /**
+     * @param completionDate the completionDate to set
+     */
+    public void setCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
     }
     
 }

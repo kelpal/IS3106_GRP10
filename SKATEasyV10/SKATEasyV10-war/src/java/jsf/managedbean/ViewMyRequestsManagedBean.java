@@ -12,10 +12,14 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import util.enumeration.StatusEnum;
 import util.exception.ArtistNotFoundException;
 
 /**
@@ -33,6 +37,8 @@ public class ViewMyRequestsManagedBean implements Serializable {
     
     private List<CustomisationRequest> customisationRequests;
     private StaffEntity currentArtist;
+    private CustomisationRequest customisationRequestToView;
+    private Boolean moveOn;
     
 
     /**
@@ -41,7 +47,8 @@ public class ViewMyRequestsManagedBean implements Serializable {
     public ViewMyRequestsManagedBean() {
         this.customisationRequests = new ArrayList<>();
         this.currentArtist = (StaffEntity)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentStaff");
-
+        this.customisationRequestToView = new CustomisationRequest();
+        this.moveOn = false;
     }
     
     @PostConstruct
@@ -49,11 +56,55 @@ public class ViewMyRequestsManagedBean implements Serializable {
     {
         try
         {
-            this.customisationRequests = customisationRequestSessionBeanLocal.retreiveCustomisationRequests(getCurrentArtist().getStaffId());
+            this.customisationRequests = customisationRequestSessionBeanLocal.retreiveCustomisationRequestsByDate(getCurrentArtist().getStaffId());
         } catch(ArtistNotFoundException ex)
         {
             System.out.println(ex.getMessage());
         }
+    }
+    
+    public void doViewProduct(ActionEvent event)
+    {
+        this.setCustomisationRequestToView((CustomisationRequest)event.getComponent().getAttributes().get("requestToView"));
+        
+    }
+    
+    public void acceptRequest(ActionEvent event)
+    {
+
+        customisationRequestToView.setStatus(StatusEnum.ACCEPTED);
+
+        customisationRequestSessionBeanLocal.updateCustomisationRequest(customisationRequestToView);
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request has been accepted! ID: " + customisationRequestToView.getCustomisationRequestId(), null));
+
+    }
+    
+    public void completeRequest(ActionEvent event)
+    {
+            customisationRequestToView.setStatus(StatusEnum.COMPLETED);
+            customisationRequestToView.setCompletionDate(new Date());
+
+            customisationRequestSessionBeanLocal.updateCustomisationRequest(customisationRequestToView);
+           
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request has been completed! ID: " + customisationRequestToView.getCustomisationRequestId(), null));
+    }
+    
+    public void rejectRequest(ActionEvent event)
+    {
+
+        customisationRequestToView.setStatus(StatusEnum.REJECTED);
+
+        customisationRequestSessionBeanLocal.updateCustomisationRequest(customisationRequestToView);
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request has been rejected! ID: " + customisationRequestToView.getCustomisationRequestId(), null));
+        this.moveOn = false;
+
+    }
+    
+    public void openRejectionReason(ActionEvent event)
+    {
+        this.moveOn = true;
     }
 
     /**
@@ -83,5 +134,32 @@ public class ViewMyRequestsManagedBean implements Serializable {
     public void setCurrentArtist(StaffEntity currentArtist) {
         this.currentArtist = currentArtist;
     }
-    
+
+    /**
+     * @return the customisationRequestToView
+     */
+    public CustomisationRequest getCustomisationRequestToView() {
+        return customisationRequestToView;
+    }
+
+    /**
+     * @param customisationRequestToView the customisationRequestToView to set
+     */
+    public void setCustomisationRequestToView(CustomisationRequest customisationRequestToView) {
+        this.customisationRequestToView = customisationRequestToView;
+    }
+
+    /**
+     * @return the moveOn
+     */
+    public Boolean getMoveOn() {
+        return moveOn;
+    }
+
+    /**
+     * @param moveOn the moveOn to set
+     */
+    public void setMoveOn(Boolean moveOn) {
+        this.moveOn = moveOn;
+    }
 }
