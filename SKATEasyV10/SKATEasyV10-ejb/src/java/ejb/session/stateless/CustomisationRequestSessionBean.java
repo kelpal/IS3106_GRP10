@@ -23,7 +23,7 @@ import javax.validation.ValidatorFactory;
 import util.exception.ArtistNotFoundException;
 import util.exception.CreateNewCustomisationRequestException;
 import util.exception.CustomerNotFoundException;
-import util.exception.CustomerUsernameExistException;
+import util.exception.CustomerNameExistException;
 import util.exception.CustomisationRequestNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;

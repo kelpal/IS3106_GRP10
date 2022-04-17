@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -37,16 +38,15 @@ public class CustomerEntity {
     @Size(max = 64)
     @Email
     private String email;
-    @Column(nullable = false, unique = true, length = 32)
-    @NotNull
-    @Size(min = 4, max = 32)
-    private String username;
     @Column(nullable = false, length = 32)
     @NotNull
     @Size(min = 8, max = 32)
     private String password; 
     @NotNull
     private Boolean isDisabled;
+    @Column(nullable = true, length = 64)
+    @Size(max = 64)
+    private String address;
     
     @OneToMany(mappedBy = "customerEntity")
     private List<SaleTransactionEntity> saleTransactionEntities;
@@ -54,17 +54,19 @@ public class CustomerEntity {
     @OneToMany(mappedBy = "customerEntity")
     private List<CustomisationRequest> customisationRequests;
     
+    @OneToOne
+    private CreditCard creditCard;
+    
     public CustomerEntity() {
         this.saleTransactionEntities = new ArrayList<>();
         this.customisationRequests = new ArrayList<>();
         this.isDisabled = false;
     }
 
-    public CustomerEntity(String name, String email, String username, String password) {
+    public CustomerEntity(String name, String email, String password) {
         this();
         this.name = name;
         this.email = email;
-        this.username = username;
         this.password = password;
     }
     
@@ -119,15 +121,7 @@ public class CustomerEntity {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    
     public String getPassword() {
         return password;
     }
@@ -176,6 +170,34 @@ public class CustomerEntity {
      */
     public void setIsDisabled(Boolean isDisabled) {
         this.isDisabled = isDisabled;
+    }
+
+    /**
+     * @return the creditCard
+     */
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    /**
+     * @param creditCard the creditCard to set
+     */
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
     }
     
     

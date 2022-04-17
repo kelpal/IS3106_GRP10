@@ -9,13 +9,13 @@ package util.exception;
  *
  * @author harmo
  */
-public class CustomerUsernameExistException extends Exception {
+public class CustomerNameExistException extends Exception {
 
-    public CustomerUsernameExistException() {
+    public CustomerNameExistException() {
     }
 
     
-    public CustomerUsernameExistException(String msg) {
+    public CustomerNameExistException(String msg) {
         super(msg);
     }
     

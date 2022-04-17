@@ -16,6 +16,7 @@ import ejb.session.stateless.StaffEntitySessionBeanLocal;
 import ejb.session.stateless.TagEntitySessionBeanLocal;
 import entity.ArtistEntity;
 import entity.CategoryEntity;
+import entity.CreditCard;
 import entity.CustomerEntity;
 import entity.CustomisationRequest;
 //import entity.CustomerEntity;
@@ -41,12 +42,13 @@ import util.enumeration.AccessRightEnum;
 import util.enumeration.StatusEnum;
 import util.exception.ArtistUsernameExistException;
 import util.exception.CategoryNotFoundException;
+import util.exception.CreateCreditCardException;
 import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewCustomisationRequestException;
 import util.exception.CreateNewProductException;
 import util.exception.CreateNewSaleTransactionException;
 import util.exception.CreateNewTagException;
-import util.exception.CustomerUsernameExistException;
+import util.exception.CustomerNameExistException;
 import util.exception.InputDataValidationException;
 import util.exception.ProductSkuCodeExistException;
 import util.exception.StaffNotFoundException;
@@ -122,10 +124,16 @@ public class DataInitSessionBean {
             StaffEntity staff2 = staffEntitySessionBeanLocal.createNewStaff(new StaffEntity("Staff", "Two", AccessRightEnum.STAFF, "staff2", "password"));
             StaffEntity staff3 = staffEntitySessionBeanLocal.createNewStaff(new StaffEntity("Staff", "Three", AccessRightEnum.STAFF, "staff3", "password"));
             
+            //CreditCard
+            CreditCard  creditCard1 = new CreditCard("1234123412341234", "Customer 1", new Date(), "123");
+            
+            
             //Customers
-            CustomerEntity customer1 = customerEntitySessionBeanLocal.createNewCustomer(new CustomerEntity("Customer 1", "customer1@email.com", "customer1", "password"));
-            CustomerEntity customer2 = customerEntitySessionBeanLocal.createNewCustomer(new CustomerEntity("Customer 2", "customer2@email.com", "customer2", "password"));
-            CustomerEntity customer3 = customerEntitySessionBeanLocal.createNewCustomer(new CustomerEntity("Customer 3", "customer3@email.com", "customer3", "password"));
+            CustomerEntity customer1 = customerEntitySessionBeanLocal.createNewCustomer(new CustomerEntity("Customer 1", "customer1@email.com", "password"));
+            CustomerEntity customer2 = customerEntitySessionBeanLocal.createNewCustomer(new CustomerEntity("Customer 2", "customer2@email.com", "password"));
+            CustomerEntity customer3 = customerEntitySessionBeanLocal.createNewCustomer(new CustomerEntity("Customer 3", "customer3@email.com", "password"));
+            
+            customerEntitySessionBeanLocal.addCreditCard(customer1.getCustomerId(), creditCard1);
             
             //Artists
             ArtistEntity artist1 = artistEntitySessionBeanLocal.createNewArtist(new ArtistEntity("Leonardo", "da Vinci", AccessRightEnum.ARTIST, "artist1", "password"));
@@ -380,8 +388,8 @@ public class DataInitSessionBean {
             
             
             
-        } catch (CreateNewCategoryException | InputDataValidationException | ArtistUsernameExistException | CustomerUsernameExistException | StaffUsernameExistException | UnknownPersistenceException | CreateNewTagException | CreateNewProductException
-                | ProductSkuCodeExistException | CreateNewCustomisationRequestException | CreateNewSaleTransactionException ex) {
+        } catch (CreateNewCategoryException | InputDataValidationException | ArtistUsernameExistException | CustomerNameExistException | StaffUsernameExistException | UnknownPersistenceException | CreateNewTagException | CreateNewProductException
+                | ProductSkuCodeExistException | CreateNewCustomisationRequestException | CreateNewSaleTransactionException | CreateCreditCardException ex) {
             ex.printStackTrace();
         }
 

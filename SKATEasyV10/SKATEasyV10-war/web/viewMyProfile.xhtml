@@ -11,18 +11,18 @@
         <h3 >View My Profile</h3>
         
         <p:messages id="messagesMain" />
-        
-        <div style="justify-content: center; display: flex" >
-        <p:graphicImage library="images" name="anonymousAvatar.jpg" height="120" width="120" alt="profile picture"/>
-        
-        </div>
-        <br/>
+     
         <div style="justify-content: center; display: flex;" >
-            
-            
-            
             <br/>
             <h:form id="formMain" >
+                
+                <div style="justify-content: center; display: flex;" >
+                    <p:graphicImage id="anonymous" library="images" name="anonymousAvatar.jpg" height="120" width="120" alt="profile picture" rendered="#{viewMyProfileManagedBean.currentStaffEntity.profilePicture == null}"/>
+                    <p:graphicImage id="profilepic" value="#{viewMyProfileManagedBean.currentStaffEntity.profilePicture}" rendered="#{viewMyProfileManagedBean.currentStaffEntity.profilePicture != null}" width="120" />
+                </div>
+                
+                <br/>
+                
                 <p:panelGrid style="align-self: center">
                     
                     <p:row>
@@ -60,20 +60,60 @@
                             <h:outputText value="#{viewMyProfileManagedBean.currentStaffEntity.accessRightEnum}" />
                         </p:column>
                     </p:row>
+                    
                     <p:row>
                         <p:column colspan="3" style="justify-content: center">
                             <p:commandButton update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" value="&nbsp;Update Profile   &nbsp;" />
                         </p:column>
                     </p:row>
-                    
+                    <p:row>
+                        <p:column colspan="3" style="justify-content: center">
+                            <p:commandButton update="formUpdatePP" oncomplete="PF('dialogUpdatePP').show()" value="&nbsp;Update Profile Picture &nbsp;" />
+                        </p:column>
+                    </p:row>
+       
                     <p:row>
                         <p:column colspan="3">
                             <p:commandButton value="Change Password" update="formChangePassword" oncomplete="PF('dialogChangePassword').show()"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
+
+                <br/>
+                
+                <p:panelGrid style="align-self: center" rendered="#{viewMyProfileManagedBean.currentStaffEntity.accessRightEnum == 'ARTIST'}">
+                    
+                    <p:row >
+                        <p:column>
+                            <h:outputLabel value="Portfolio: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewMyProfileManagedBean.currentArtistEntity.portfolio}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Best Work: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="None" rendered="#{viewMyProfileManagedBean.currentArtistEntity.bestWork == null}"/>
+                            <p:graphicImage id="bestWork" value="#{viewMyProfileManagedBean.currentArtistEntity.bestWork}" rendered="#{viewMyProfileManagedBean.currentArtistEntity.bestWork != null}" width="120" />
+                        </p:column>
+                    </p:row>
+       
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Update Portfolio" update="formUpdatePortfolio" oncomplete="PF('dialogUpdatePortfolio').show()"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Update Best Work" update="formUpdateBestWork" oncomplete="PF('dialogUpdateBestWork').show()"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
             </h:form>
-            
             <br />
             
             <h:form id="formUpdateProfile">
@@ -175,6 +215,131 @@
                             </p:column>
                         </p:row>
                         
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <h:form id="formUpdatePP">
+
+                <p:dialog id="dialogUpdatePP" widgetVar="dialogUpdatePP" header="Update Profile Picture" closable="true">
+
+                    <p:messages id="messagesUpdatePP" redisplay="false" />
+                    
+                  
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="pp" value="Profile Picture: " />
+                            </p:column>
+                            <p:column>
+                                <h:inputText id="pp" value="#{viewMyProfileManagedBean.newPP}" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="pp" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Preview" update="@form formMain" actionListener="#{viewMyProfileManagedBean.doUpdatePP}" oncomplete="PF('dialogUpdatePP').show()" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row rendered="#{viewMyProfileManagedBean.moveOn == true}">
+                            <p:column colspan="3">
+                                <p:graphicImage value="#{viewMyProfileManagedBean.newPP}" width="100"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row rendered="#{viewMyProfileManagedBean.moveOn == true}">
+                            <p:column colspan="3">
+                                <p:commandButton value=" Update Profile Picture" update="@form formMain" actionListener="#{viewMyProfileManagedBean.updatePP}" oncomplete="PF('dialogUpdatePP').show()" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <h:form id="formUpdatePortfolio">
+
+                <p:dialog id="dialogUpdatePortfolio" widgetVar="dialogUpdatePortfolio" header="Update Portfolio" closable="true">
+
+                    <p:messages id="messagesUpdatePortfolio" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="portfolio" value="Portfolio: " />
+                            </p:column>
+                            <p:column>
+                                <h:inputTextarea id="portfolio" value="#{viewMyProfileManagedBean.newPortfolio}">
+                                    <f:ajax event="keyup" execute="@this" render="formUpdatePortfolio:portfolioLengthRemaining" listener="#{viewMyProfileManagedBean.updateLength}" />
+                                    <f:validateLength maximum='2000' />
+                                </h:inputTextarea>
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="portfolioLengthRemaining" value="#{viewMyProfileManagedBean.portfolioLength}/2000" />                                   
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value=" Update Portfolio" update="@form formMain" actionListener="#{viewMyProfileManagedBean.updatePortfolio}" oncomplete="PF('dialogUpdatePortfolio').show()" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <h:form id="formUpdateBestWork">
+
+                <p:dialog id="dialogUpdateBestWork" widgetVar="dialogUpdateBestWork" header="Update Best Work" closable="true">
+
+                    <p:messages id="messagesUpdateBestWork" redisplay="false" />
+                    
+                  
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="bestWork" value="New Best Work: " />
+                            </p:column>
+                            <p:column>
+                                <h:inputText id="bestWork" value="#{viewMyProfileManagedBean.newBestWork}" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="bestWork" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Preview" update="@form formMain" actionListener="#{viewMyProfileManagedBean.doUpdateBestWork}" oncomplete="PF('dialogUpdateBestWork').show()" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row rendered="#{viewMyProfileManagedBean.moveOn2 == true}">
+                            <p:column colspan="3">
+                                <p:graphicImage value="#{viewMyProfileManagedBean.newBestWork}" width="100"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row rendered="#{viewMyProfileManagedBean.moveOn2 == true}">
+                            <p:column colspan="3">
+                                <p:commandButton value=" Update Best Work" update="@form formMain" actionListener="#{viewMyProfileManagedBean.updateBestWork}" oncomplete="PF('dialogUpdateBestWork').show()" />
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
 
                 </p:dialog>

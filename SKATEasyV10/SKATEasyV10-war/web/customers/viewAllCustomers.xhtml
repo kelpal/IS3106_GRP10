@@ -22,17 +22,16 @@
                     <p:column headerText="Customer ID" sortBy="#{customer.customerId}" style="text-align: center">
                         <h:outputText value="#{customer.customerId}"/>
                     </p:column>
-                    
-                    <p:column headerText="Username" sortBy="#{customer.username}" style="text-align: center">
-                        <h:outputText value="#{customer.username}" />
-                    </p:column>
-
                     <p:column headerText="Email" sortBy="#{customer.email}" style="text-align: center">
                         <h:outputText value="#{customer.email}" />
                     </p:column>           
                     
                     <p:column headerText="Name" sortBy="#{customer.name}" style="text-align: center">
                         <h:outputText value="#{customer.name}" />
+                    </p:column>
+                    
+                    <p:column headerText="Address" sortBy="#{customer.address}" style="text-align: center">
+                        <h:outputText value="#{customer.address}" />
                     </p:column>
                     
                     <p:column headerText="Disabled?" sortBy="#{customer.isDisabled}" style="text-align: center">

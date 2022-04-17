@@ -27,13 +27,17 @@ import util.enumeration.AccessRightEnum;
 public class ArtistEntity extends StaffEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Column(length = 128)
-    @Size(max = 128)
+    @Column(length = 1500)
+    @Size(max = 1500)
     private String portfolio;
+    
+    @Column(length = 2000)
+    @Size (max = 2000)
+    private String bestWork;
     
     @OneToMany(mappedBy = "artistEntity", fetch = FetchType.LAZY)
     private List<CustomisationRequest> customisationRequests;
-
+    
     public ArtistEntity() {
     }
 
@@ -78,6 +82,20 @@ public class ArtistEntity extends StaffEntity implements Serializable {
      */
     public void setCustomisationRequests(List<CustomisationRequest> customisationRequests) {
         this.customisationRequests = customisationRequests;
+    }
+
+    /**
+     * @return the bestWork
+     */
+    public String getBestWork() {
+        return bestWork;
+    }
+
+    /**
+     * @param bestWork the bestWork to set
+     */
+    public void setBestWork(String bestWork) {
+        this.bestWork = bestWork;
     }
 
    

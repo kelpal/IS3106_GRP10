@@ -6,14 +6,18 @@
 package ejb.session.stateless;
 
 import entity.ArtistEntity;
+import entity.CreditCard;
 import entity.CustomerEntity;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.CreateCreditCardException;
 import util.exception.CustomerNotFoundException;
-import util.exception.CustomerUsernameExistException;
+import util.exception.CustomerNameExistException;
+import util.exception.DeleteCreditCardException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.UnknownPersistenceException;
+import util.exception.UpdateCreditCardException;
 
 /**
  *
@@ -22,7 +26,7 @@ import util.exception.UnknownPersistenceException;
 @Local
 public interface CustomerEntitySessionBeanLocal {
 
-    public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws CustomerUsernameExistException, UnknownPersistenceException, InputDataValidationException;
+    public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws CustomerNameExistException, UnknownPersistenceException, InputDataValidationException;
 
     public CustomerEntity customerLogin(String username, String password) throws InvalidLoginCredentialException;
 
@@ -34,5 +38,11 @@ public interface CustomerEntitySessionBeanLocal {
     public List<CustomerEntity> retrieveAllCustomers();
 
     public void updateCustomer(CustomerEntity customer);
+
+    public CustomerEntity addCreditCard(Long customerId, CreditCard creditCard) throws CreateCreditCardException;
+
+    public CustomerEntity changeCreditCard(Long customerId, CreditCard newCreditCard) throws CreateCreditCardException, UpdateCreditCardException;
+
+    public CustomerEntity removeCreditCard(Long customerId) throws DeleteCreditCardException;
     
 }

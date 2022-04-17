@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.ArtistEntity;
+import entity.CreditCard;
 import entity.CustomerEntity;
 import java.util.List;
 import java.util.Set;
@@ -20,11 +21,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CreateCreditCardException;
 import util.exception.CustomerNotFoundException;
-import util.exception.CustomerUsernameExistException;
+import util.exception.CustomerNameExistException;
+import util.exception.DeleteCreditCardException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.UnknownPersistenceException;
+import util.exception.UpdateCreditCardException;
 
 /**
  *
@@ -46,7 +50,7 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
     
     
     @Override
-    public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws CustomerUsernameExistException, UnknownPersistenceException, InputDataValidationException
+    public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws CustomerNameExistException, UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<CustomerEntity>>constraintViolations = validator.validate(newCustomerEntity);
         
@@ -65,7 +69,7 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
                 {
                     if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
                     {
-                        throw new CustomerUsernameExistException();
+                        throw new CustomerNameExistException();
                     }
                     else
                     {
@@ -81,6 +85,78 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
         else
         {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+    
+    @Override
+    public CustomerEntity addCreditCard(Long customerId, CreditCard creditCard) throws CreateCreditCardException
+    {
+        try
+        {
+            CustomerEntity customer = retrieveCustomerById(customerId);
+  
+            creditCard.setCustomer(customer);
+            
+            em.persist(creditCard);
+            
+            customer.setCreditCard(creditCard);
+
+            
+            em.flush();
+            
+            return customer;
+                        
+            
+        } catch (CustomerNotFoundException ex)
+        {
+            throw new CreateCreditCardException("Error creating credit card. " + ex.getMessage());
+        }
+        
+    }
+    
+    @Override
+    public CustomerEntity changeCreditCard(Long customerId, CreditCard newCreditCard) throws CreateCreditCardException, UpdateCreditCardException
+    {
+        try
+        {
+            CustomerEntity customer = retrieveCustomerById(customerId);
+            
+            em.remove(customer.getCreditCard());
+            
+            em.persist(newCreditCard);
+            
+            customer.setCreditCard(newCreditCard);
+            newCreditCard.setCustomer(customer);
+            
+            em.flush();
+            
+            return customer;
+                        
+            
+        } catch (CustomerNotFoundException ex)
+        {
+            throw new UpdateCreditCardException("Error updating credit card. " + ex.getMessage());
+        }
+        
+    }
+    
+    @Override
+    public CustomerEntity removeCreditCard(Long customerId) throws DeleteCreditCardException
+    {
+        try
+        {
+            CustomerEntity customer = retrieveCustomerById(customerId);
+            
+            em.remove(customer.getCreditCard());
+           
+            em.flush();
+            
+            return customer;
+                        
+            
+        } catch (CustomerNotFoundException ex)
+        {
+            throw new DeleteCreditCardException("Error deleting credit card. " + ex.getMessage());
         }
     }
         
@@ -114,6 +190,13 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
         Query query = em.createQuery("SELECT c FROM CustomerEntity c ORDER BY c.customerId ASC");
         List<CustomerEntity> customerEntities = query.getResultList();
         
+        for(CustomerEntity customer:customerEntities)
+        {
+            customer.getCreditCard();
+            customer.getCustomisationRequests().size();
+            customer.getSaleTransactionEntities().size();
+        }
+        
        return customerEntities;
     }
     
@@ -133,9 +216,9 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
     }
     
     @Override
-    public CustomerEntity retrieveCustomerById(Long employeeId) throws CustomerNotFoundException
+    public CustomerEntity retrieveCustomerById(Long customerId) throws CustomerNotFoundException
     {
-        CustomerEntity customer = em.find(CustomerEntity.class, employeeId);
+        CustomerEntity customer = em.find(CustomerEntity.class, customerId);
         
         if(customer != null)
         {
@@ -143,7 +226,7 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
         }
         else
         {
-            throw new CustomerNotFoundException("Customer ID " + employeeId + " does not exist");
+            throw new CustomerNotFoundException("Customer ID " + customerId + " does not exist");
         }
     }
     

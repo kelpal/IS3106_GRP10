@@ -46,6 +46,9 @@ public class StaffEntity implements Serializable {
     @Column(nullable = false)
     @NotNull
     private AccessRightEnum accessRightEnum;
+    @Column(length = 2000)
+    @Size(max = 2000)
+    private String profilePicture;
     @Column(nullable = false, unique = true, length = 32)
     @NotNull
     @Size(min = 4, max = 32)
@@ -188,6 +191,20 @@ public class StaffEntity implements Serializable {
      */
     public void setSaleTransactionEntities(List<SaleTransactionEntity> saleTransactionEntities) {
         this.saleTransactionEntities = saleTransactionEntities;
+    }
+
+    /**
+     * @return the profilePicture
+     */
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    /**
+     * @param profilePicture the profilePicture to set
+     */
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
     
 }
