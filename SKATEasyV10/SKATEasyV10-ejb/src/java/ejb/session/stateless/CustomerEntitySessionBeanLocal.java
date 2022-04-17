@@ -28,10 +28,7 @@ public interface CustomerEntitySessionBeanLocal {
 
     public CustomerEntity createNewCustomer(CustomerEntity newCustomerEntity) throws CustomerNameExistException, UnknownPersistenceException, InputDataValidationException;
 
-    public CustomerEntity customerLogin(String username, String password) throws InvalidLoginCredentialException;
-
-    public CustomerEntity retrieveCustomerByUsername(String username) throws CustomerNotFoundException;
-
+    public CustomerEntity customerLogin(String email, String password) throws InvalidLoginCredentialException;
 
     public CustomerEntity retrieveCustomerById(Long employeeId) throws CustomerNotFoundException;
 
@@ -44,5 +41,7 @@ public interface CustomerEntitySessionBeanLocal {
     public CustomerEntity changeCreditCard(Long customerId, CreditCard newCreditCard) throws CreateCreditCardException, UpdateCreditCardException;
 
     public CustomerEntity removeCreditCard(Long customerId) throws DeleteCreditCardException;
+
+    public CustomerEntity retrieveCustomerByEmail(String email) throws CustomerNotFoundException;
     
 }

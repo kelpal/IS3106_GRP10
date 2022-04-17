@@ -11,6 +11,7 @@ import javax.ejb.Local;
 import util.exception.ArtistNotFoundException;
 import util.exception.CreateNewCustomisationRequestException;
 import util.exception.CustomisationRequestNotFoundException;
+import util.exception.DeleteCustomisationRequestException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 
@@ -30,5 +31,7 @@ public interface CustomisationRequestSessionBeanLocal {
     public CustomisationRequest retrieveCustomisationRequestById(Long requestId) throws CustomisationRequestNotFoundException;
 
     public List<CustomisationRequest> retreiveCustomisationRequestsByDate(Long artistId) throws ArtistNotFoundException;
+
+    public void deleteCustomisationRequest(Long customisationReqeuestId) throws CustomisationRequestNotFoundException, DeleteCustomisationRequestException;
     
 }

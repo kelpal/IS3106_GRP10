@@ -163,11 +163,11 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
         
 
     @Override
-    public CustomerEntity customerLogin(String username, String password) throws InvalidLoginCredentialException
+    public CustomerEntity customerLogin(String email, String password) throws InvalidLoginCredentialException
     {
         try
         {
-            CustomerEntity customerEntity = retrieveCustomerByUsername(username);
+            CustomerEntity customerEntity = retrieveCustomerByEmail(email);
             
             if(customerEntity.getPassword().equals(password))
             {
@@ -201,17 +201,17 @@ public class CustomerEntitySessionBean implements CustomerEntitySessionBeanLocal
     }
     
     @Override
-    public CustomerEntity retrieveCustomerByUsername(String username) throws CustomerNotFoundException
+    public CustomerEntity retrieveCustomerByEmail(String email) throws CustomerNotFoundException
     {
-        Query query = em.createQuery("SELECT a FROM CustomerEntity a WHERE a.username = :inUsername");
-        query.setParameter(":inUsername", username);
+        Query query = em.createQuery("SELECT a FROM CustomerEntity a WHERE a.email = :inEmail");
+        query.setParameter(":inEmail", email);
         
         
         try {
             return (CustomerEntity)query.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex)
         {
-            throw new CustomerNotFoundException("Artist Username" + username + " cannot be found!");
+            throw new CustomerNotFoundException("Customer email" + email + " cannot be found!");
         }
     }
     

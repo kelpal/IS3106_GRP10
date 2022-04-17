@@ -20,11 +20,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.StatusEnum;
 import util.exception.ArtistNotFoundException;
 import util.exception.CreateNewCustomisationRequestException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerNameExistException;
 import util.exception.CustomisationRequestNotFoundException;
+import util.exception.DeleteCustomisationRequestException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 
@@ -122,7 +124,6 @@ public class CustomisationRequestSessionBean implements CustomisationRequestSess
         query.setParameter("inArtistId", artistId);
 
         return query.getResultList();
-
     }
     
     @Override
@@ -146,6 +147,22 @@ public class CustomisationRequestSessionBean implements CustomisationRequestSess
         em.merge(newRequest);
         
         return newRequest;
+    }
+    
+    @Override
+    public void deleteCustomisationRequest(Long customisationReqeuestId) throws CustomisationRequestNotFoundException, DeleteCustomisationRequestException
+    {
+        CustomisationRequest requestToDelete = retrieveCustomisationRequestById(customisationReqeuestId);
+        
+        if (requestToDelete.getStatus() == StatusEnum.ACCEPTED)
+        {
+            throw new DeleteCustomisationRequestException("Customisation Request ID " + customisationReqeuestId + "has been accepted and cannot be deleted!");
+        } else {
+            requestToDelete.getArtistEntity().getCustomisationRequests().remove(requestToDelete);
+            requestToDelete.getCustomerEntity().getCustomisationRequests().remove(requestToDelete);
+        
+            em.remove(requestToDelete);
+        }
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<CustomisationRequest>> constraintViolations)
